@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real-Time AI Avatar</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+    </head>
+<body data-theme="dark">
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">AI Avatar Interface</a>
+                <div class="header-actions">
+                    <a href="/logout" id="logoutBtn" class="btn btn-danger">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <h3>Modes</h3>
+            <ul class="nav-links">
+                <li><a href="#" class="active" data-page="avatar-mode">🎙️ Realtime Talking</a></li>
+                <li><a href="#" data-page="vision-mode">👁️ Vision Mode</a></li>
+                <li><a href="#" data-page="scheduled-mode">🗓️ Scheduled Mode</a></li>
+            </ul>
+        </aside>
+
+        <main class="content-area">
+            {% include 'index.html' %}
+        </main>
+    </div>
+
+    <script>
+        // Pass the user_id to the script
+        const USER_ID = "{{ user_id }}";
+    </script>
+    <script src="{{ url_for('static', path='scripts.js') }}"></script>
+</body>
+</html>

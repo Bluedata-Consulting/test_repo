@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AI Avatar</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+    </head>
+<body data-theme="dark" class="login-page-body"> {# ADDED THIS CLASS #}
+    <div class="login-card">
+        <h2 class="login-title">Avatar Interface Login</h2>
+        <form class="login-form" method="post">
+            <input type="text" name="username" placeholder="Username" class="input-field" required value="admin">
+            <input type="password" name="password" placeholder="Password" class="input-field" required value="admin123">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>

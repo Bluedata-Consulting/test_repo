@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+groq
+langchain
+pydub
+librosa
+soundfile 
+faster_whisper 
+langchain_groq
+langchain_core
+tts==0.22.0
+ffmpeg-python
+torchaudio
+numpy==1.22.0
+python-multipart
+
+

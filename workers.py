@@ -15,7 +15,7 @@ import json
 import soundfile as sf
 
 logging.basicConfig(
-    filename='/home/bdc-ayushk/avatarr/log_dir/useravatar.log',
+    filename='useravatar.log',
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )

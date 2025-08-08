@@ -42,19 +42,19 @@ def video_sync_worker(audio_queue, video_queue, video_path, stop_event, temp_dir
         try:
             audio_path = audio_queue.get(timeout=1)
             logging.info(f"Video sync worker: Received audio_path={audio_path}")
-            
-            # --- MODIFICATION START ---
+
             if audio_path == "__END_OF_RESPONSE__":
-                logging.info("Video sync worker: Received __END_OF_RESPONSE__, skipping audio processing for this signal.")
-                continue # Skip processing this as a file
-            # --- MODIFICATION END ---
-            
+                logging.info("Video sync worker: Received __END_OF_RESPONSE__, signaling end to video_queue.")
+                # Optionally, put a marker in the video_queue to signal end of videos
+                video_queue.put("__END_OF_RESPONSE__")
+                break  # Stop the worker loop
+
             if audio_path is None: 
                 logging.info("Video sync worker: Received None audio path, waiting for next query.")
                 continue
 
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-            output_path = os.path.join(temp_dir, f"synced_video_{timestamp}.mp4") # Use temp_dir here
+            output_path = os.path.join(temp_dir, f"synced_video_{timestamp}.mp4")
 
             try:
                 synced_path = sync_video_with_audio(video_path, audio_path, output_path)

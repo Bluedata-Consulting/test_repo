@@ -1,0 +1,1439 @@
+2025-08-10 17:32:43,201 - INFO - Using device: cpu
+2025-08-10 17:32:44,046 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:32:46,627 - INFO - TTS model loaded successfully.
+2025-08-10 17:32:46,880 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:32:50,649 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 17:32:51,185 - INFO - TTS worker process started for user 1.
+2025-08-10 17:32:51,186 - INFO - Video sync worker process started for user 1.
+2025-08-10 17:32:51,187 - INFO - Video queue monitor task started for user 1.
+2025-08-10 17:32:54,424 - INFO - Received audio chunk and saved to ./temp/user_audio_1_1754847174.webm
+2025-08-10 17:32:54,424 - INFO - Processing audio for LLM and TTS for user 1: './temp/user_audio_1_1754847174.webm'
+2025-08-10 17:32:54,424 - INFO - Processing audio file: ./temp/user_audio_1_1754847174.webm, size: 19481 bytes
+2025-08-10 17:32:54,837 - INFO - Converted webm to wav: ./temp/user_audio_1_1754847174.wav
+2025-08-10 17:32:55,104 - INFO - Audio loaded: shape=(19200,), sr=16000
+2025-08-10 17:32:55,104 - INFO - Audio duration: 1.20 seconds
+2025-08-10 17:32:55,104 - INFO - Processing audio with duration 00:01.200
+2025-08-10 17:32:55,942 - INFO - Detected language 'en' with probability 0.67
+2025-08-10 17:32:56,594 - INFO - Transcription result: ' Hey, how are you?'
+2025-08-10 17:32:56,595 - INFO - Cleaned up input audio file: ./temp/user_audio_1_1754847174.webm
+2025-08-10 17:32:56,824 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 401 Unauthorized"
+2025-08-10 17:32:56,824 - ERROR - LLM/TTS processing error for user 1: Error code: 401 - {'error': {'message': 'Invalid API Key', 'type': 'invalid_request_error', 'code': 'invalid_api_key'}}
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 445, in process_llm_and_tts
+    async for chunk_text in llm_only_chain.astream(prompt_input):
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/langchain_core/runnables/base.py", line 3467, in astream
+    async for chunk in self.atransform(input_aiter(), config, **kwargs):
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/langchain_core/runnables/base.py", line 3449, in atransform
+    async for chunk in self._atransform_stream_with_config(
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/langchain_core/runnables/base.py", line 2320, in _atransform_stream_with_config
+    chunk = await coro_with_context(py_anext(iterator), context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/langchain_core/runnables/base.py", line 3416, in _atransform
+    async for output in final_pipeline:
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/langchain_core/output_parsers/transform.py", line 95, in atransform
+    async for chunk in self._atransform_stream_with_config(
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/langchain_core/runnables/base.py", line 2280, in _atransform_stream_with_config
+    final_input: Optional[Input] = await py_anext(input_for_tracing, None)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/langchain_core/utils/aiter.py", line 78, in anext_impl
+    return await __anext__(iterator)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/langchain_core/utils/aiter.py", line 133, in tee_peer
+    item = await iterator.__anext__()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/langchain_core/runnables/base.py", line 1490, in atransform
+    async for output in self.astream(final, config, **kwargs):
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/langchain_core/language_models/chat_models.py", line 603, in astream
+    async for chunk in self._astream(
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/langchain_groq/chat_models.py", line 609, in _astream
+    async for chunk in await self.async_client.create(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/groq/resources/chat/completions.py", line 771, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/groq/_base_client.py", line 1762, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/groq/_base_client.py", line 1576, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.AuthenticationError: Error code: 401 - {'error': {'message': 'Invalid API Key', 'type': 'invalid_request_error', 'code': 'invalid_api_key'}}
+2025-08-10 17:33:00,252 - INFO - Using device: cpu
+2025-08-10 17:33:00,283 - INFO - Using device: cpu
+2025-08-10 17:33:01,493 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:33:01,495 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:33:07,132 - INFO - TTS model loaded successfully.
+2025-08-10 17:33:07,134 - INFO - TTS model loaded successfully.
+2025-08-10 17:33:07,343 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:33:07,346 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:33:07,355 - INFO - TTS worker process started with speaker: downloaded_media/1749534228.wav
+2025-08-10 17:33:07,356 - INFO - Video sync worker: Started with video_path=downloaded_media/1749534228.mp4, temp_dir=./temp
+2025-08-10 17:33:09,249 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 17:34:04,266 - INFO - Using device: cpu
+2025-08-10 17:34:04,936 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:34:06,064 - INFO - TTS model loaded successfully.
+2025-08-10 17:34:06,149 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:34:09,849 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 17:34:11,894 - INFO - TTS worker process started for user 1.
+2025-08-10 17:34:11,897 - INFO - Video sync worker process started for user 1.
+2025-08-10 17:34:11,897 - INFO - Video queue monitor task started for user 1.
+2025-08-10 17:34:15,011 - INFO - Received audio chunk and saved to ./temp/user_audio_1_1754847255.webm
+2025-08-10 17:34:15,011 - INFO - Processing audio for LLM and TTS for user 1: './temp/user_audio_1_1754847255.webm'
+2025-08-10 17:34:15,011 - INFO - Processing audio file: ./temp/user_audio_1_1754847255.webm, size: 15617 bytes
+2025-08-10 17:34:15,412 - INFO - Converted webm to wav: ./temp/user_audio_1_1754847255.wav
+2025-08-10 17:34:15,670 - INFO - Audio loaded: shape=(15360,), sr=16000
+2025-08-10 17:34:15,670 - INFO - Audio duration: 0.96 seconds
+2025-08-10 17:34:15,671 - INFO - Processing audio with duration 00:00.960
+2025-08-10 17:34:16,383 - INFO - Detected language 'en' with probability 0.73
+2025-08-10 17:34:17,019 - INFO - Transcription result: ' Hey, how are you?'
+2025-08-10 17:34:17,020 - INFO - Cleaned up input audio file: ./temp/user_audio_1_1754847255.webm
+2025-08-10 17:34:17,492 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-10 17:34:19,940 - INFO - Using device: cpu
+2025-08-10 17:34:19,944 - INFO - Using device: cpu
+2025-08-10 17:34:20,609 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:34:20,622 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:34:23,297 - INFO - TTS model loaded successfully.
+2025-08-10 17:34:23,357 - INFO - TTS model loaded successfully.
+2025-08-10 17:34:23,412 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:34:23,418 - INFO - Video sync worker: Started with video_path=downloaded_media/1749534228.mp4, temp_dir=./temp
+2025-08-10 17:34:23,456 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:34:23,461 - INFO - TTS worker process started with speaker: downloaded_media/1749534228.wav
+2025-08-10 17:34:24,777 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 17:34:26,278 - INFO - Generated TTS audio: ./temp/tts_output_1754847264777_57514.wav
+2025-08-10 17:34:26,281 - INFO - Video sync worker: Received audio_path=./temp/tts_output_1754847264777_57514.wav
+2025-08-10 17:34:26,608 - INFO - Audio duration: 1.073s, Video duration: 8.48s
+2025-08-10 17:34:26,608 - INFO - Audio is shorter than video - trimming video to exactly match audio duration
+2025-08-10 17:34:26,608 - INFO - Running FFmpeg command: ffmpeg -y -i downloaded_media/1749534228.mp4 -i ./temp/tts_output_1754847264777_57514.wav -map 0:v:0 -map 1:a:0 -c:v libx264 -c:a aac -t 1.073 ./temp/synced_video_20250810_173426_281350.mp4
+2025-08-10 17:34:27,775 - INFO - Generated TTS audio: ./temp/tts_output_1754847266279_57514.wav
+2025-08-10 17:34:27,939 - INFO - Video sync completed in 1.66s for ./temp/synced_video_20250810_173426_281350.mp4
+2025-08-10 17:34:27,940 - INFO - Video sync worker: Synced video at ./temp/synced_video_20250810_173426_281350.mp4
+2025-08-10 17:34:29,010 - INFO - Generated TTS audio: ./temp/tts_output_1754847267777_57514.wav
+2025-08-10 17:34:29,010 - INFO - TTS worker received end of response signal.
+2025-08-10 17:34:29,011 - INFO - Video sync worker: Received audio_path=./temp/tts_output_1754847267777_57514.wav
+2025-08-10 17:34:29,034 - INFO - Received __END_OF_RESPONSE__ from TTS worker for user 1
+2025-08-10 17:34:29,253 - INFO - Audio duration: 1.825s, Video duration: 8.48s
+2025-08-10 17:34:29,253 - INFO - Audio is shorter than video - trimming video to exactly match audio duration
+2025-08-10 17:34:29,253 - INFO - Running FFmpeg command: ffmpeg -y -i downloaded_media/1749534228.mp4 -i ./temp/tts_output_1754847267777_57514.wav -map 0:v:0 -map 1:a:0 -c:v libx264 -c:a aac -t 1.825 ./temp/synced_video_20250810_173429_011488.mp4
+2025-08-10 17:34:30,339 - INFO - Video sync completed in 1.33s for ./temp/synced_video_20250810_173429_011488.mp4
+2025-08-10 17:34:30,339 - INFO - Video sync worker: Synced video at ./temp/synced_video_20250810_173429_011488.mp4
+2025-08-10 17:35:17,522 - INFO - Received audio chunk and saved to ./temp/user_audio_1_1754847317.webm
+2025-08-10 17:35:17,522 - INFO - Processing audio for LLM and TTS for user 1: './temp/user_audio_1_1754847317.webm'
+2025-08-10 17:35:17,522 - INFO - Processing audio file: ./temp/user_audio_1_1754847317.webm, size: 48461 bytes
+2025-08-10 17:35:17,847 - INFO - Converted webm to wav: ./temp/user_audio_1_1754847317.wav
+2025-08-10 17:35:17,850 - INFO - Audio loaded: shape=(48000,), sr=16000
+2025-08-10 17:35:17,850 - INFO - Audio duration: 3.00 seconds
+2025-08-10 17:35:17,850 - INFO - Processing audio with duration 00:03.000
+2025-08-10 17:35:18,425 - INFO - Detected language 'en' with probability 0.49
+2025-08-10 17:35:19,027 - INFO - Transcription result: ' could you tell me what is AI in short'
+2025-08-10 17:35:19,027 - INFO - Cleaned up input audio file: ./temp/user_audio_1_1754847317.webm
+2025-08-10 17:35:19,443 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-10 17:35:20,633 - INFO - Generated TTS audio: ./temp/tts_output_1754847319449_57514.wav
+2025-08-10 17:35:20,634 - INFO - Video sync worker: Received audio_path=./temp/tts_output_1754847319449_57514.wav
+2025-08-10 17:35:20,988 - INFO - Audio duration: 1.041s, Video duration: 8.48s
+2025-08-10 17:35:20,988 - INFO - Audio is shorter than video - trimming video to exactly match audio duration
+2025-08-10 17:35:20,988 - INFO - Running FFmpeg command: ffmpeg -y -i downloaded_media/1749534228.mp4 -i ./temp/tts_output_1754847319449_57514.wav -map 0:v:0 -map 1:a:0 -c:v libx264 -c:a aac -t 1.041 ./temp/synced_video_20250810_173520_634634.mp4
+2025-08-10 17:35:22,196 - INFO - Video sync completed in 1.56s for ./temp/synced_video_20250810_173520_634634.mp4
+2025-08-10 17:35:22,197 - INFO - Video sync worker: Synced video at ./temp/synced_video_20250810_173520_634634.mp4
+2025-08-10 17:35:22,427 - INFO - Generated TTS audio: ./temp/tts_output_1754847320633_57514.wav
+2025-08-10 17:35:22,427 - INFO - Video sync worker: Received audio_path=./temp/tts_output_1754847320633_57514.wav
+2025-08-10 17:35:22,800 - INFO - Audio duration: 2.337s, Video duration: 8.48s
+2025-08-10 17:35:22,800 - INFO - Audio is shorter than video - trimming video to exactly match audio duration
+2025-08-10 17:35:22,800 - INFO - Running FFmpeg command: ffmpeg -y -i downloaded_media/1749534228.mp4 -i ./temp/tts_output_1754847320633_57514.wav -map 0:v:0 -map 1:a:0 -c:v libx264 -c:a aac -t 2.337 ./temp/synced_video_20250810_173522_427835.mp4
+2025-08-10 17:35:24,620 - INFO - Video sync completed in 2.19s for ./temp/synced_video_20250810_173522_427835.mp4
+2025-08-10 17:35:24,620 - INFO - Video sync worker: Synced video at ./temp/synced_video_20250810_173522_427835.mp4
+2025-08-10 17:35:26,335 - INFO - Generated TTS audio: ./temp/tts_output_1754847322427_57514.wav
+2025-08-10 17:35:26,335 - INFO - Video sync worker: Received audio_path=./temp/tts_output_1754847322427_57514.wav
+2025-08-10 17:35:26,734 - INFO - Audio duration: 11.105s, Video duration: 8.48s
+2025-08-10 17:35:26,734 - INFO - Audio is longer than video - creating looped video with exact audio duration
+2025-08-10 17:35:26,734 - INFO - Need to loop video 2 times to cover audio duration
+2025-08-10 17:35:26,734 - INFO - Running FFmpeg command: ffmpeg -y -f concat -safe 0 -i ./temp/concat_synced_video_20250810_173526_335847.mp4.txt -c copy ./temp/looped_synced_video_20250810_173526_335847.mp4
+2025-08-10 17:35:27,092 - INFO - Running FFmpeg command: ffmpeg -y -i ./temp/looped_synced_video_20250810_173526_335847.mp4 -i ./temp/tts_output_1754847322427_57514.wav -map 0:v:0 -map 1:a:0 -c:v libx264 -c:a aac -t 11.105 ./temp/synced_video_20250810_173526_335847.mp4
+2025-08-10 17:35:28,623 - INFO - Generated TTS audio: ./temp/tts_output_1754847326335_57514.wav
+2025-08-10 17:35:28,627 - INFO - TTS worker received end of response signal.
+2025-08-10 17:35:28,723 - INFO - Received __END_OF_RESPONSE__ from TTS worker for user 1
+2025-08-10 17:35:31,673 - INFO - Video sync completed in 5.34s for ./temp/synced_video_20250810_173526_335847.mp4
+2025-08-10 17:35:31,673 - INFO - Video sync worker: Synced video at ./temp/synced_video_20250810_173526_335847.mp4
+2025-08-10 17:36:04,026 - INFO - Cleaning up session for user_id: 1
+2025-08-10 17:36:04,127 - INFO - Terminating worker process: tts
+2025-08-10 17:36:04,247 - INFO - Terminating worker process: video
+2025-08-10 17:36:04,310 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 17:36:04,311 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 17:36:04,318 - INFO - TTS worker process started for user 1.
+2025-08-10 17:36:04,319 - INFO - Video sync worker process started for user 1.
+2025-08-10 17:36:04,319 - INFO - Video queue monitor task started for user 1.
+2025-08-10 17:36:15,901 - INFO - Using device: cpu
+2025-08-10 17:36:15,901 - INFO - Using device: cpu
+2025-08-10 17:36:16,613 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:36:16,614 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:36:18,580 - INFO - TTS model loaded successfully.
+2025-08-10 17:36:18,591 - INFO - TTS model loaded successfully.
+2025-08-10 17:36:18,686 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:36:18,689 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:36:18,694 - INFO - TTS worker process started with speaker: downloaded_media/1852048276.wav
+2025-08-10 17:36:18,697 - INFO - Video sync worker: Started with video_path=downloaded_media/1852048276.mp4, temp_dir=./temp
+2025-08-10 17:36:19,825 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 17:36:29,734 - INFO - Cleaning up session for user_id: 1
+2025-08-10 17:36:29,835 - INFO - Terminating worker process: tts
+2025-08-10 17:36:29,932 - INFO - Terminating worker process: video
+2025-08-10 17:36:29,994 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 17:36:29,994 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 17:36:29,997 - INFO - TTS worker process started for user 1.
+2025-08-10 17:36:30,000 - INFO - Video sync worker process started for user 1.
+2025-08-10 17:36:30,000 - INFO - Video queue monitor task started for user 1.
+2025-08-10 17:36:38,532 - INFO - Using device: cpu
+2025-08-10 17:36:38,640 - INFO - Using device: cpu
+2025-08-10 17:36:39,134 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:36:39,158 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:36:40,783 - INFO - TTS model loaded successfully.
+2025-08-10 17:36:40,826 - INFO - TTS model loaded successfully.
+2025-08-10 17:36:40,969 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:36:40,977 - INFO - Video sync worker: Started with video_path=downloaded_media/1749534228.mp4, temp_dir=./temp
+2025-08-10 17:36:40,984 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:36:40,991 - INFO - TTS worker process started with speaker: downloaded_media/1749534228.wav
+2025-08-10 17:36:42,477 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 17:36:51,431 - INFO - Cleaning up session for user_id: 1
+2025-08-10 17:36:51,490 - INFO - TTS worker process stopped.
+2025-08-10 17:36:51,532 - INFO - Terminating worker process: tts
+2025-08-10 17:36:51,624 - INFO - Terminating worker process: video
+2025-08-10 17:36:51,689 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 17:36:51,689 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 17:36:51,691 - INFO - TTS worker process started for user 1.
+2025-08-10 17:36:51,692 - INFO - Video sync worker process started for user 1.
+2025-08-10 17:36:51,692 - INFO - Video queue monitor task started for user 1.
+2025-08-10 17:36:55,845 - INFO - Received audio chunk and saved to ./temp/user_audio_1_1754847415.webm
+2025-08-10 17:36:55,845 - INFO - Processing audio for LLM and TTS for user 1: './temp/user_audio_1_1754847415.webm'
+2025-08-10 17:36:55,845 - INFO - Processing audio file: ./temp/user_audio_1_1754847415.webm, size: 21413 bytes
+2025-08-10 17:36:56,169 - INFO - Converted webm to wav: ./temp/user_audio_1_1754847415.wav
+2025-08-10 17:36:56,173 - INFO - Audio loaded: shape=(21120,), sr=16000
+2025-08-10 17:36:56,173 - INFO - Audio duration: 1.32 seconds
+2025-08-10 17:36:56,173 - INFO - Processing audio with duration 00:01.320
+2025-08-10 17:36:56,943 - INFO - Detected language 'en' with probability 0.60
+2025-08-10 17:36:57,649 - INFO - Transcription result: ' Hey, how are you?'
+2025-08-10 17:36:57,649 - INFO - Cleaned up input audio file: ./temp/user_audio_1_1754847415.webm
+2025-08-10 17:36:58,047 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-10 17:37:02,405 - INFO - Using device: cpu
+2025-08-10 17:37:02,463 - INFO - Using device: cpu
+2025-08-10 17:37:03,065 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:37:03,090 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:37:05,033 - INFO - TTS model loaded successfully.
+2025-08-10 17:37:05,080 - INFO - TTS model loaded successfully.
+2025-08-10 17:37:05,169 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:37:05,176 - INFO - Video sync worker: Started with video_path=downloaded_media/1852048276.mp4, temp_dir=./temp
+2025-08-10 17:37:05,193 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:37:05,198 - INFO - TTS worker process started with speaker: downloaded_media/1852048276.wav
+2025-08-10 17:37:06,427 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 17:37:07,874 - INFO - Generated TTS audio: ./temp/tts_output_1754847426428_58986.wav
+2025-08-10 17:37:07,877 - INFO - Video sync worker: Received audio_path=./temp/tts_output_1754847426428_58986.wav
+2025-08-10 17:37:08,216 - INFO - Audio duration: 1.153s, Video duration: 8.24s
+2025-08-10 17:37:08,216 - INFO - Audio is shorter than video - trimming video to exactly match audio duration
+2025-08-10 17:37:08,217 - INFO - Running FFmpeg command: ffmpeg -y -i downloaded_media/1852048276.mp4 -i ./temp/tts_output_1754847426428_58986.wav -map 0:v:0 -map 1:a:0 -c:v libx264 -c:a aac -t 1.153 ./temp/synced_video_20250810_173707_877606.mp4
+2025-08-10 17:37:09,573 - INFO - Generated TTS audio: ./temp/tts_output_1754847427875_58986.wav
+2025-08-10 17:37:11,382 - INFO - Generated TTS audio: ./temp/tts_output_1754847429575_58986.wav
+2025-08-10 17:37:11,386 - INFO - TTS worker received end of response signal.
+2025-08-10 17:37:11,468 - INFO - Received __END_OF_RESPONSE__ from TTS worker for user 1
+2025-08-10 17:37:12,577 - INFO - Video sync completed in 4.70s for ./temp/synced_video_20250810_173707_877606.mp4
+2025-08-10 17:37:12,578 - INFO - Video sync worker: Synced video at ./temp/synced_video_20250810_173707_877606.mp4
+2025-08-10 17:37:34,824 - INFO - Cleaning up session for user_id: 1
+2025-08-10 17:37:34,924 - INFO - Terminating worker process: tts
+2025-08-10 17:37:35,011 - INFO - Terminating worker process: video
+2025-08-10 17:37:35,075 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 17:37:35,076 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 17:37:35,092 - INFO - TTS worker process started for user 1.
+2025-08-10 17:37:35,093 - INFO - Video sync worker process started for user 1.
+2025-08-10 17:37:35,093 - INFO - Video queue monitor task started for user 1.
+2025-08-10 17:37:48,286 - INFO - Using device: cpu
+2025-08-10 17:37:48,286 - INFO - Using device: cpu
+2025-08-10 17:37:48,636 - INFO - Cleaning up session for user_id: 1
+2025-08-10 17:37:48,737 - INFO - Terminating worker process: tts
+2025-08-10 17:37:48,805 - INFO - Terminating worker process: video
+2025-08-10 17:37:48,857 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 17:37:48,858 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 17:37:48,859 - INFO - TTS worker process started for user 1.
+2025-08-10 17:37:48,861 - INFO - Video sync worker process started for user 1.
+2025-08-10 17:37:48,861 - INFO - Video queue monitor task started for user 1.
+2025-08-10 17:37:54,474 - INFO - Received audio chunk and saved to ./temp/user_audio_1_1754847474.webm
+2025-08-10 17:37:54,474 - INFO - Processing audio for LLM and TTS for user 1: './temp/user_audio_1_1754847474.webm'
+2025-08-10 17:37:54,474 - INFO - Processing audio file: ./temp/user_audio_1_1754847474.webm, size: 58121 bytes
+2025-08-10 17:37:54,878 - INFO - Converted webm to wav: ./temp/user_audio_1_1754847474.wav
+2025-08-10 17:37:54,888 - INFO - Audio loaded: shape=(57600,), sr=16000
+2025-08-10 17:37:54,888 - INFO - Audio duration: 3.60 seconds
+2025-08-10 17:37:54,889 - INFO - Processing audio with duration 00:03.600
+2025-08-10 17:37:55,662 - INFO - Detected language 'en' with probability 0.36
+2025-08-10 17:37:56,425 - INFO - Transcription result: ' Hey, could you tell me what is machine on the game short?'
+2025-08-10 17:37:56,425 - INFO - Cleaned up input audio file: ./temp/user_audio_1_1754847474.webm
+2025-08-10 17:37:56,882 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-10 17:37:58,975 - INFO - Using device: cpu
+2025-08-10 17:37:59,166 - INFO - Using device: cpu
+2025-08-10 17:37:59,648 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:37:59,823 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 17:38:02,351 - INFO - TTS model loaded successfully.
+2025-08-10 17:38:02,367 - INFO - TTS model loaded successfully.
+2025-08-10 17:38:02,696 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:38:02,713 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 17:38:02,721 - INFO - Video sync worker: Started with video_path=downloaded_media/1852048276.mp4, temp_dir=./temp
+2025-08-10 17:38:02,726 - INFO - TTS worker process started with speaker: downloaded_media/1852048276.wav
+2025-08-10 17:38:04,325 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 17:38:06,701 - INFO - Generated TTS audio: ./temp/tts_output_1754847484327_59547.wav
+2025-08-10 17:38:06,708 - INFO - Video sync worker: Received audio_path=./temp/tts_output_1754847484327_59547.wav
+2025-08-10 17:38:07,043 - INFO - Audio duration: 7.345s, Video duration: 8.24s
+2025-08-10 17:38:07,044 - INFO - Audio is shorter than video - trimming video to exactly match audio duration
+2025-08-10 17:38:07,044 - INFO - Running FFmpeg command: ffmpeg -y -i downloaded_media/1852048276.mp4 -i ./temp/tts_output_1754847484327_59547.wav -map 0:v:0 -map 1:a:0 -c:v libx264 -c:a aac -t 7.345 ./temp/synced_video_20250810_173806_709057.mp4
+2025-08-10 17:38:09,350 - INFO - Generated TTS audio: ./temp/tts_output_1754847486703_59547.wav
+2025-08-10 18:48:45,213 - INFO - Using device: cpu
+2025-08-10 18:48:45,769 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 18:48:47,339 - INFO - TTS model loaded successfully.
+2025-08-10 18:48:47,484 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 18:48:53,499 - INFO - Authentication successful for user: admin
+2025-08-10 18:48:53,888 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 18:48:54,434 - INFO - TTS worker process started for user 1.
+2025-08-10 18:48:54,435 - INFO - Video sync worker process started for user 1.
+2025-08-10 18:48:54,436 - INFO - Video queue monitor task started for user 1.
+2025-08-10 18:48:56,085 - INFO - Cleaning up session for user_id: 1
+2025-08-10 18:48:56,185 - INFO - Terminating worker process: tts
+2025-08-10 18:48:56,220 - INFO - Terminating worker process: video
+2025-08-10 18:48:56,238 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 18:48:56,238 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 18:48:56,256 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 18:48:56,256 - ERROR - Error sending JSON to user 1: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 577, in websocket_endpoint
+    message = await websocket.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 57, in receive
+    raise RuntimeError('Cannot call "receive" once a disconnect message has been received.')
+RuntimeError: Cannot call "receive" once a disconnect message has been received.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 295, in send_json
+    await self.active_connections[user_id].send_json(data)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 176, in send_json
+    await self.send({"type": "websocket.send", "text": text})
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 86, in send
+    await self._send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/_exception_handler.py", line 39, in sender
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 83, in send_wrapper
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/uvicorn/protocols/websockets/websockets_impl.py", line 360, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-08-10 18:48:56,267 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 18:50:50,599 - INFO - Using device: cpu
+2025-08-10 18:50:51,213 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 18:50:52,592 - INFO - TTS model loaded successfully.
+2025-08-10 18:50:52,677 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 18:50:57,272 - INFO - Authentication successful for user: admin
+2025-08-10 18:50:57,678 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 18:50:58,308 - INFO - TTS worker process started for user 1.
+2025-08-10 18:50:58,310 - INFO - Video sync worker process started for user 1.
+2025-08-10 18:50:58,311 - INFO - Video queue monitor task started for user 1.
+2025-08-10 18:51:09,920 - INFO - Using device: cpu
+2025-08-10 18:51:09,920 - INFO - Using device: cpu
+2025-08-10 18:51:11,103 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 18:51:11,110 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 18:51:11,150 - ERROR - Could not load TTS model: Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 95, in <module>
+    tts_model = TTS("tts_models/multilingual/multi-dataset/your_tts").to(device)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/api.py", line 74, in __init__
+    self.load_tts_model_by_name(model_name, gpu)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/api.py", line 171, in load_tts_model_by_name
+    model_path, config_path, vocoder_path, vocoder_config_path, model_dir = self.download_model_by_name(
+                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/api.py", line 129, in download_model_by_name
+    model_path, config_path, model_item = self.manager.download_model(model_name)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/utils/manage.py", line 421, in download_model
+    self._update_paths(output_path, output_config_path)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/utils/manage.py", line 495, in _update_paths
+    self._update_path("model_args.speaker_encoder_model_path", speaker_encoder_model_path, config_path)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/utils/manage.py", line 503, in _update_path
+    config = load_config(config_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/config/__init__.py", line 92, in load_config
+    data = read_json_with_comments(config_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/config/__init__.py", line 21, in read_json_with_comments
+    return json.loads(input_str)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/.local/share/uv/python/cpython-3.11.13-linux-x86_64-gnu/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/.local/share/uv/python/cpython-3.11.13-linux-x86_64-gnu/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/.local/share/uv/python/cpython-3.11.13-linux-x86_64-gnu/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2025-08-10 18:51:11,254 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 18:51:11,265 - INFO - Video sync worker: Started with video_path=downloaded_media/1749534228.mp4, temp_dir=./temp
+2025-08-10 18:51:14,422 - INFO - TTS model loaded successfully.
+2025-08-10 18:51:14,522 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 18:51:14,527 - INFO - TTS worker process started with speaker: downloaded_media/1749534228.wav
+2025-08-10 18:51:16,408 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 18:56:42,167 - INFO - Authentication successful for user: admin
+2025-08-10 18:56:42,610 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 18:56:46,402 - INFO - Cleaning up session for user_id: 1
+2025-08-10 18:56:46,507 - INFO - Terminating worker process: tts
+2025-08-10 18:56:46,607 - INFO - Terminating worker process: video
+2025-08-10 18:56:46,647 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 18:56:46,647 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 18:56:46,658 - INFO - TTS worker process started for user 1.
+2025-08-10 18:56:46,660 - INFO - Video sync worker process started for user 1.
+2025-08-10 18:56:46,660 - INFO - Video queue monitor task started for user 1.
+2025-08-10 18:56:49,137 - INFO - Cleaning up session for user_id: 1
+2025-08-10 18:56:49,238 - INFO - Terminating worker process: tts
+2025-08-10 18:56:49,255 - INFO - Terminating worker process: video
+2025-08-10 18:56:49,272 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 18:56:49,272 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 18:56:49,290 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 18:56:49,290 - ERROR - Error sending JSON to user 1: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 577, in websocket_endpoint
+    message = await websocket.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 57, in receive
+    raise RuntimeError('Cannot call "receive" once a disconnect message has been received.')
+RuntimeError: Cannot call "receive" once a disconnect message has been received.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 295, in send_json
+    await self.active_connections[user_id].send_json(data)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 176, in send_json
+    await self.send({"type": "websocket.send", "text": text})
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 86, in send
+    await self._send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/_exception_handler.py", line 39, in sender
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 83, in send_wrapper
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/uvicorn/protocols/websockets/websockets_impl.py", line 360, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-08-10 18:56:49,316 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 18:59:04,209 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 18:59:04,210 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 18:59:04,592 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 18:59:06,300 - INFO - TTS worker process started for user 1.
+2025-08-10 18:59:06,303 - INFO - Video sync worker process started for user 1.
+2025-08-10 18:59:06,304 - INFO - Video queue monitor task started for user 1.
+2025-08-10 18:59:07,529 - INFO - Cleaning up session for user_id: 1
+2025-08-10 18:59:07,629 - INFO - Terminating worker process: tts
+2025-08-10 18:59:07,644 - INFO - Terminating worker process: video
+2025-08-10 18:59:07,659 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 18:59:07,659 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 18:59:07,671 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 18:59:07,672 - ERROR - Error sending JSON to user 1: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 577, in websocket_endpoint
+    message = await websocket.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 57, in receive
+    raise RuntimeError('Cannot call "receive" once a disconnect message has been received.')
+RuntimeError: Cannot call "receive" once a disconnect message has been received.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 295, in send_json
+    await self.active_connections[user_id].send_json(data)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 176, in send_json
+    await self.send({"type": "websocket.send", "text": text})
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 86, in send
+    await self._send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/_exception_handler.py", line 39, in sender
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 83, in send_wrapper
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/uvicorn/protocols/websockets/websockets_impl.py", line 360, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-08-10 18:59:07,677 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 18:59:24,002 - INFO - Using device: cpu
+2025-08-10 18:59:24,609 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 18:59:26,096 - INFO - TTS model loaded successfully.
+2025-08-10 18:59:26,249 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 18:59:30,694 - INFO - Authentication successful for user: admin
+2025-08-10 18:59:31,079 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 18:59:31,668 - INFO - TTS worker process started for user 1.
+2025-08-10 18:59:31,671 - INFO - Video sync worker process started for user 1.
+2025-08-10 18:59:31,672 - INFO - Video queue monitor task started for user 1.
+2025-08-10 18:59:38,428 - INFO - Received audio chunk and saved to ./temp/user_audio_1_1754852378.webm
+2025-08-10 18:59:38,428 - INFO - Processing audio for LLM and TTS for user 1: './temp/user_audio_1_1754852378.webm'
+2025-08-10 18:59:38,428 - INFO - Processing audio file: ./temp/user_audio_1_1754852378.webm, size: 28175 bytes
+2025-08-10 18:59:38,836 - INFO - Converted webm to wav: ./temp/user_audio_1_1754852378.wav
+2025-08-10 18:59:39,079 - INFO - Audio loaded: shape=(27840,), sr=16000
+2025-08-10 18:59:39,079 - INFO - Audio duration: 1.74 seconds
+2025-08-10 18:59:39,079 - INFO - Processing audio with duration 00:01.740
+2025-08-10 18:59:39,828 - INFO - Detected language 'en' with probability 0.53
+2025-08-10 18:59:39,938 - INFO - Using device: cpu
+2025-08-10 18:59:39,989 - INFO - Using device: cpu
+2025-08-10 18:59:40,404 - INFO - Transcription result: ' Thank you for watching.'
+2025-08-10 18:59:40,404 - INFO - Cleaned up input audio file: ./temp/user_audio_1_1754852378.webm
+2025-08-10 18:59:40,502 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 18:59:40,866 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-10 18:59:41,008 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 18:59:43,953 - INFO - TTS model loaded successfully.
+2025-08-10 18:59:44,011 - INFO - TTS model loaded successfully.
+2025-08-10 18:59:44,123 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 18:59:44,123 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 18:59:44,131 - INFO - TTS worker process started with speaker: downloaded_media/1749534228.wav
+2025-08-10 18:59:44,131 - INFO - Video sync worker: Started with video_path=downloaded_media/1749534228.mp4, temp_dir=./temp
+2025-08-10 18:59:46,288 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 18:59:48,782 - INFO - Generated TTS audio: ./temp/tts_output_1754852386288_6686.wav
+2025-08-10 18:59:48,784 - INFO - Video sync worker: Received audio_path=./temp/tts_output_1754852386288_6686.wav
+2025-08-10 18:59:49,618 - INFO - Audio duration: 1.009s, Video duration: 8.48s
+2025-08-10 18:59:49,619 - INFO - Audio is shorter than video - trimming video to exactly match audio duration
+2025-08-10 18:59:49,619 - INFO - Running FFmpeg command: ffmpeg -y -i downloaded_media/1749534228.mp4 -i ./temp/tts_output_1754852386288_6686.wav -map 0:v:0 -map 1:a:0 -c:v libx264 -c:a aac -t 1.009 ./temp/synced_video_20250810_185948_784400.mp4
+2025-08-10 18:59:50,226 - INFO - Generated TTS audio: ./temp/tts_output_1754852388783_6686.wav
+2025-08-10 18:59:51,642 - INFO - Generated TTS audio: ./temp/tts_output_1754852390226_6686.wav
+2025-08-10 18:59:53,665 - INFO - Generated TTS audio: ./temp/tts_output_1754852391642_6686.wav
+2025-08-10 18:59:53,665 - INFO - TTS worker received end of response signal.
+2025-08-10 18:59:53,760 - INFO - Received __END_OF_RESPONSE__ from TTS worker for user 1
+2025-08-10 18:59:53,805 - INFO - Video sync completed in 5.02s for ./temp/synced_video_20250810_185948_784400.mp4
+2025-08-10 18:59:53,806 - INFO - Video sync worker: Synced video at ./temp/synced_video_20250810_185948_784400.mp4
+2025-08-10 19:02:41,593 - INFO - Using device: cpu
+2025-08-10 19:02:42,327 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:02:44,239 - INFO - TTS model loaded successfully.
+2025-08-10 19:02:44,320 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:02:48,017 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:02:48,850 - INFO - TTS worker process started for user 1.
+2025-08-10 19:02:48,852 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:02:48,852 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:02:57,471 - INFO - Using device: cpu
+2025-08-10 19:02:57,669 - INFO - Using device: cpu
+2025-08-10 19:02:58,087 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:02:58,286 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:03:00,761 - INFO - TTS model loaded successfully.
+2025-08-10 19:03:00,853 - INFO - TTS model loaded successfully.
+2025-08-10 19:03:00,945 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:03:00,960 - INFO - TTS worker process started with speaker: downloaded_media/1749534228.wav
+2025-08-10 19:03:00,980 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:03:00,990 - INFO - Video sync worker: Started with video_path=downloaded_media/1749534228.mp4, temp_dir=./temp
+2025-08-10 19:03:02,868 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 19:04:18,880 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 19:04:18,881 - ERROR - Error sending JSON to user 1: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 577, in websocket_endpoint
+    message = await websocket.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 57, in receive
+    raise RuntimeError('Cannot call "receive" once a disconnect message has been received.')
+RuntimeError: Cannot call "receive" once a disconnect message has been received.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 295, in send_json
+    await self.active_connections[user_id].send_json(data)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 176, in send_json
+    await self.send({"type": "websocket.send", "text": text})
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 86, in send
+    await self._send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/_exception_handler.py", line 39, in sender
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 83, in send_wrapper
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/uvicorn/protocols/websockets/websockets_impl.py", line 360, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-08-10 19:04:18,890 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:04:18,991 - INFO - Terminating worker process: tts
+2025-08-10 19:04:19,066 - INFO - Terminating worker process: video
+2025-08-10 19:04:19,119 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:04:19,119 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:04:19,120 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 19:04:32,853 - INFO - Using device: cpu
+2025-08-10 19:04:33,651 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:04:34,931 - INFO - TTS model loaded successfully.
+2025-08-10 19:04:35,019 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:04:38,234 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:04:41,476 - INFO - TTS worker process started for user 1.
+2025-08-10 19:04:41,479 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:04:41,479 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:04:43,396 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 19:04:43,397 - ERROR - Error sending JSON to user 1: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 577, in websocket_endpoint
+    message = await websocket.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 57, in receive
+    raise RuntimeError('Cannot call "receive" once a disconnect message has been received.')
+RuntimeError: Cannot call "receive" once a disconnect message has been received.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 295, in send_json
+    await self.active_connections[user_id].send_json(data)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 176, in send_json
+    await self.send({"type": "websocket.send", "text": text})
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 86, in send
+    await self._send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/_exception_handler.py", line 39, in sender
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 83, in send_wrapper
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/uvicorn/protocols/websockets/websockets_impl.py", line 360, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-08-10 19:04:43,403 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:04:43,503 - INFO - Terminating worker process: tts
+2025-08-10 19:04:43,527 - INFO - Terminating worker process: video
+2025-08-10 19:04:43,553 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:04:43,553 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:04:43,553 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 19:05:22,094 - INFO - Using device: cpu
+2025-08-10 19:05:22,602 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:05:23,898 - INFO - TTS model loaded successfully.
+2025-08-10 19:05:23,985 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:05:27,417 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:05:28,318 - INFO - TTS worker process started for user 1.
+2025-08-10 19:05:28,321 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:05:28,321 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:05:32,047 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 19:05:32,048 - ERROR - Error sending JSON to user 1: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 577, in websocket_endpoint
+    message = await websocket.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 57, in receive
+    raise RuntimeError('Cannot call "receive" once a disconnect message has been received.')
+RuntimeError: Cannot call "receive" once a disconnect message has been received.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 295, in send_json
+    await self.active_connections[user_id].send_json(data)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 176, in send_json
+    await self.send({"type": "websocket.send", "text": text})
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 86, in send
+    await self._send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/_exception_handler.py", line 39, in sender
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 83, in send_wrapper
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/uvicorn/protocols/websockets/websockets_impl.py", line 360, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-08-10 19:05:32,052 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:05:32,152 - INFO - Terminating worker process: tts
+2025-08-10 19:05:32,186 - INFO - Terminating worker process: video
+2025-08-10 19:05:32,215 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:05:32,216 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:05:32,216 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 19:08:18,658 - INFO - Using device: cpu
+2025-08-10 19:08:19,566 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:08:21,311 - INFO - TTS model loaded successfully.
+2025-08-10 19:08:21,449 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:08:25,792 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:08:27,235 - INFO - TTS worker process started for user 1.
+2025-08-10 19:08:27,237 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:08:27,237 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:10:19,671 - INFO - Using device: cpu
+2025-08-10 19:10:20,388 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:10:22,024 - INFO - TTS model loaded successfully.
+2025-08-10 19:10:22,132 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:10:25,678 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:10:26,258 - INFO - TTS worker process started for user 1.
+2025-08-10 19:10:26,265 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:10:26,265 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:10:29,755 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 19:10:29,756 - ERROR - Error sending JSON to user 1: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 577, in websocket_endpoint
+    message = await websocket.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 57, in receive
+    raise RuntimeError('Cannot call "receive" once a disconnect message has been received.')
+RuntimeError: Cannot call "receive" once a disconnect message has been received.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 295, in send_json
+    await self.active_connections[user_id].send_json(data)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 176, in send_json
+    await self.send({"type": "websocket.send", "text": text})
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 86, in send
+    await self._send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/_exception_handler.py", line 39, in sender
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 83, in send_wrapper
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/uvicorn/protocols/websockets/websockets_impl.py", line 360, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-08-10 19:10:29,762 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:10:29,863 - INFO - Terminating worker process: tts
+2025-08-10 19:10:29,903 - INFO - Terminating worker process: video
+2025-08-10 19:10:29,924 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:10:29,924 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:10:29,925 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 19:12:20,125 - INFO - Using device: cpu
+2025-08-10 19:12:20,902 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:12:22,684 - INFO - TTS model loaded successfully.
+2025-08-10 19:12:22,998 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:12:45,659 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:12:47,363 - INFO - TTS worker process started for user 1.
+2025-08-10 19:12:47,365 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:12:47,365 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:12:58,359 - INFO - Using device: cpu
+2025-08-10 19:12:58,422 - INFO - Using device: cpu
+2025-08-10 19:12:59,203 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:12:59,207 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:13:03,994 - INFO - TTS model loaded successfully.
+2025-08-10 19:13:03,997 - INFO - TTS model loaded successfully.
+2025-08-10 19:13:04,232 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:13:04,236 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:13:04,241 - INFO - Video sync worker: Started with video_path=downloaded_media/1749534228.mp4, temp_dir=./temp
+2025-08-10 19:13:04,244 - INFO - TTS worker process started with speaker: downloaded_media/1749534228.wav
+2025-08-10 19:13:07,558 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 19:13:26,647 - INFO - Authentication successful for user: admin
+2025-08-10 19:13:27,122 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:13:30,972 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:13:31,073 - INFO - Terminating worker process: tts
+2025-08-10 19:13:31,208 - INFO - Terminating worker process: video
+2025-08-10 19:13:31,273 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:13:31,273 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:13:31,286 - INFO - TTS worker process started for user 1.
+2025-08-10 19:13:31,287 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:13:31,287 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:13:33,794 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:13:33,895 - INFO - Terminating worker process: tts
+2025-08-10 19:13:33,934 - INFO - Terminating worker process: video
+2025-08-10 19:13:33,959 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:13:33,959 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:13:33,961 - INFO - TTS worker process started for user 1.
+2025-08-10 19:13:33,962 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:13:33,962 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:13:47,938 - INFO - Using device: cpu
+2025-08-10 19:13:47,939 - INFO - Using device: cpu
+2025-08-10 19:13:48,995 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:13:48,998 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:13:49,055 - ERROR - Could not load TTS model: Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 95, in <module>
+    tts_model = TTS("tts_models/multilingual/multi-dataset/your_tts").to(device)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/api.py", line 74, in __init__
+    self.load_tts_model_by_name(model_name, gpu)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/api.py", line 171, in load_tts_model_by_name
+    model_path, config_path, vocoder_path, vocoder_config_path, model_dir = self.download_model_by_name(
+                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/api.py", line 129, in download_model_by_name
+    model_path, config_path, model_item = self.manager.download_model(model_name)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/utils/manage.py", line 421, in download_model
+    self._update_paths(output_path, output_config_path)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/utils/manage.py", line 495, in _update_paths
+    self._update_path("model_args.speaker_encoder_model_path", speaker_encoder_model_path, config_path)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/utils/manage.py", line 503, in _update_path
+    config = load_config(config_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/config/__init__.py", line 92, in load_config
+    data = read_json_with_comments(config_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/config/__init__.py", line 21, in read_json_with_comments
+    return json.loads(input_str)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/.local/share/uv/python/cpython-3.11.13-linux-x86_64-gnu/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/.local/share/uv/python/cpython-3.11.13-linux-x86_64-gnu/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/.local/share/uv/python/cpython-3.11.13-linux-x86_64-gnu/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2025-08-10 19:13:49,184 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:13:49,190 - INFO - TTS worker process started with speaker: downloaded_media/1749534228.wav
+2025-08-10 19:13:51,829 - INFO - TTS model loaded successfully.
+2025-08-10 19:13:51,899 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 19:13:51,967 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:13:51,975 - INFO - Video sync worker: Started with video_path=downloaded_media/1749534228.mp4, temp_dir=./temp
+2025-08-10 19:14:23,833 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 19:14:23,834 - ERROR - Error sending JSON to user 1: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 577, in websocket_endpoint
+    message = await websocket.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 57, in receive
+    raise RuntimeError('Cannot call "receive" once a disconnect message has been received.')
+RuntimeError: Cannot call "receive" once a disconnect message has been received.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 295, in send_json
+    await self.active_connections[user_id].send_json(data)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 176, in send_json
+    await self.send({"type": "websocket.send", "text": text})
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 86, in send
+    await self._send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/_exception_handler.py", line 39, in sender
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 83, in send_wrapper
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/uvicorn/protocols/websockets/websockets_impl.py", line 360, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-08-10 19:14:23,850 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:14:23,952 - INFO - Terminating worker process: tts
+2025-08-10 19:14:24,032 - INFO - Terminating worker process: video
+2025-08-10 19:14:24,105 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:14:24,105 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:14:24,106 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 19:14:24,106 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 19:14:24,106 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 19:14:42,008 - INFO - Using device: cpu
+2025-08-10 19:14:42,592 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:14:44,231 - INFO - TTS model loaded successfully.
+2025-08-10 19:14:44,351 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:15:06,977 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:15:08,151 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:08,153 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:08,154 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:10,131 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:10,232 - INFO - Terminating worker process: tts
+2025-08-10 19:15:10,256 - INFO - Terminating worker process: video
+2025-08-10 19:15:10,280 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:10,280 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:10,286 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:10,287 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:10,287 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:13,654 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:13,755 - INFO - Terminating worker process: tts
+2025-08-10 19:15:13,785 - INFO - Terminating worker process: video
+2025-08-10 19:15:13,816 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:13,816 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:13,819 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:13,820 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:13,821 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:18,233 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:18,334 - INFO - Terminating worker process: tts
+2025-08-10 19:15:18,373 - INFO - Terminating worker process: video
+2025-08-10 19:15:18,405 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:18,405 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:18,407 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:18,408 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:18,408 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:20,305 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:20,406 - INFO - Terminating worker process: tts
+2025-08-10 19:15:20,429 - INFO - Terminating worker process: video
+2025-08-10 19:15:20,450 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:20,450 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:20,453 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:20,454 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:20,454 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:22,355 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:22,456 - INFO - Terminating worker process: tts
+2025-08-10 19:15:22,480 - INFO - Terminating worker process: video
+2025-08-10 19:15:22,504 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:22,505 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:22,507 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:22,507 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:22,507 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:25,104 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:25,204 - INFO - Terminating worker process: tts
+2025-08-10 19:15:25,230 - INFO - Terminating worker process: video
+2025-08-10 19:15:25,252 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:25,252 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:25,254 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:25,255 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:25,255 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:27,757 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:27,857 - INFO - Terminating worker process: tts
+2025-08-10 19:15:27,887 - INFO - Terminating worker process: video
+2025-08-10 19:15:27,912 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:27,912 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:27,914 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:27,915 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:27,915 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:29,673 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:29,774 - INFO - Terminating worker process: tts
+2025-08-10 19:15:29,797 - INFO - Terminating worker process: video
+2025-08-10 19:15:29,819 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:29,819 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:29,822 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:29,822 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:29,822 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:31,313 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:31,413 - INFO - Terminating worker process: tts
+2025-08-10 19:15:31,435 - INFO - Terminating worker process: video
+2025-08-10 19:15:31,456 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:31,456 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:31,458 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:31,460 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:31,460 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:32,894 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:32,995 - INFO - Terminating worker process: tts
+2025-08-10 19:15:33,018 - INFO - Terminating worker process: video
+2025-08-10 19:15:33,038 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:33,038 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:33,040 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:33,041 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:33,042 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:34,312 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:34,412 - INFO - Terminating worker process: tts
+2025-08-10 19:15:34,434 - INFO - Terminating worker process: video
+2025-08-10 19:15:34,454 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:34,454 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:34,460 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:34,462 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:34,462 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:36,184 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:36,284 - INFO - Terminating worker process: tts
+2025-08-10 19:15:36,307 - INFO - Terminating worker process: video
+2025-08-10 19:15:36,329 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:36,329 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:36,332 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:36,333 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:36,333 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:37,657 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:37,757 - INFO - Terminating worker process: tts
+2025-08-10 19:15:37,780 - INFO - Terminating worker process: video
+2025-08-10 19:15:37,798 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:37,798 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:37,800 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:37,801 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:37,801 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:39,904 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:40,004 - INFO - Terminating worker process: tts
+2025-08-10 19:15:40,029 - INFO - Terminating worker process: video
+2025-08-10 19:15:40,052 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:40,052 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:40,056 - INFO - TTS worker process started for user 1.
+2025-08-10 19:15:40,057 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:15:40,057 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:15:50,036 - INFO - Using device: cpu
+2025-08-10 19:15:50,072 - INFO - Using device: cpu
+2025-08-10 19:15:50,816 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:15:50,821 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:15:50,897 - ERROR - Could not load TTS model: Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 95, in <module>
+    tts_model = TTS("tts_models/multilingual/multi-dataset/your_tts").to(device)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/api.py", line 74, in __init__
+    self.load_tts_model_by_name(model_name, gpu)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/api.py", line 171, in load_tts_model_by_name
+    model_path, config_path, vocoder_path, vocoder_config_path, model_dir = self.download_model_by_name(
+                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/api.py", line 129, in download_model_by_name
+    model_path, config_path, model_item = self.manager.download_model(model_name)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/utils/manage.py", line 421, in download_model
+    self._update_paths(output_path, output_config_path)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/utils/manage.py", line 497, in _update_paths
+    self._update_path("model_args.speaker_encoder_config_path", speaker_encoder_config_path, config_path)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/utils/manage.py", line 503, in _update_path
+    config = load_config(config_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/config/__init__.py", line 92, in load_config
+    data = read_json_with_comments(config_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/config/__init__.py", line 21, in read_json_with_comments
+    return json.loads(input_str)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/.local/share/uv/python/cpython-3.11.13-linux-x86_64-gnu/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/.local/share/uv/python/cpython-3.11.13-linux-x86_64-gnu/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/.local/share/uv/python/cpython-3.11.13-linux-x86_64-gnu/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2025-08-10 19:15:51,070 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:15:51,079 - INFO - Video sync worker: Started with video_path=downloaded_media/1749534228.mp4, temp_dir=./temp
+2025-08-10 19:15:52,682 - INFO - TTS model loaded successfully.
+2025-08-10 19:15:52,821 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:15:52,829 - INFO - TTS worker process started with speaker: downloaded_media/1749534228.wav
+2025-08-10 19:15:54,423 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 19:15:57,828 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 19:15:57,828 - ERROR - Error sending JSON to user 1: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 577, in websocket_endpoint
+    message = await websocket.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 57, in receive
+    raise RuntimeError('Cannot call "receive" once a disconnect message has been received.')
+RuntimeError: Cannot call "receive" once a disconnect message has been received.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 295, in send_json
+    await self.active_connections[user_id].send_json(data)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 176, in send_json
+    await self.send({"type": "websocket.send", "text": text})
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 86, in send
+    await self._send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/_exception_handler.py", line 39, in sender
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 83, in send_wrapper
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/uvicorn/protocols/websockets/websockets_impl.py", line 360, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-08-10 19:15:57,830 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:15:57,931 - INFO - Terminating worker process: tts
+2025-08-10 19:15:58,037 - INFO - Terminating worker process: video
+2025-08-10 19:15:58,087 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:15:58,088 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:15:58,088 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 19:16:36,131 - INFO - Using device: cpu
+2025-08-10 19:16:36,756 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:16:38,325 - INFO - TTS model loaded successfully.
+2025-08-10 19:16:38,440 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:16:40,696 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:16:42,601 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 19:16:42,601 - ERROR - Error sending JSON to user 1: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 577, in websocket_endpoint
+    message = await websocket.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 57, in receive
+    raise RuntimeError('Cannot call "receive" once a disconnect message has been received.')
+RuntimeError: Cannot call "receive" once a disconnect message has been received.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 295, in send_json
+    await self.active_connections[user_id].send_json(data)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 176, in send_json
+    await self.send({"type": "websocket.send", "text": text})
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 86, in send
+    await self._send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/_exception_handler.py", line 39, in sender
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 83, in send_wrapper
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/uvicorn/protocols/websockets/websockets_impl.py", line 360, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-08-10 19:16:42,607 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 19:16:44,381 - INFO - Authentication successful for user: admin
+2025-08-10 19:16:44,772 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:16:45,673 - INFO - TTS worker process started for user 1.
+2025-08-10 19:16:45,676 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:16:45,677 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:16:47,737 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:16:47,837 - INFO - Terminating worker process: tts
+2025-08-10 19:16:47,859 - INFO - Terminating worker process: video
+2025-08-10 19:16:47,878 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:16:47,878 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:16:47,881 - INFO - TTS worker process started for user 1.
+2025-08-10 19:16:47,882 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:16:47,882 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:16:49,680 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:16:49,780 - INFO - Terminating worker process: tts
+2025-08-10 19:16:49,810 - INFO - Terminating worker process: video
+2025-08-10 19:16:49,830 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:16:49,830 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:16:49,832 - INFO - TTS worker process started for user 1.
+2025-08-10 19:16:49,833 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:16:49,833 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:16:54,156 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:16:54,256 - INFO - Terminating worker process: tts
+2025-08-10 19:16:54,287 - INFO - Terminating worker process: video
+2025-08-10 19:16:54,316 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:16:54,316 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:16:54,318 - INFO - TTS worker process started for user 1.
+2025-08-10 19:16:54,322 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:16:54,322 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:16:56,190 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:16:56,291 - INFO - Terminating worker process: tts
+2025-08-10 19:16:56,314 - INFO - Terminating worker process: video
+2025-08-10 19:16:56,334 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:16:56,334 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:16:56,337 - INFO - TTS worker process started for user 1.
+2025-08-10 19:16:56,338 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:16:56,338 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:16:58,194 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:16:58,295 - INFO - Terminating worker process: tts
+2025-08-10 19:16:58,320 - INFO - Terminating worker process: video
+2025-08-10 19:16:58,340 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:16:58,340 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:16:58,342 - INFO - TTS worker process started for user 1.
+2025-08-10 19:16:58,343 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:16:58,343 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:16:59,891 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:16:59,992 - INFO - Terminating worker process: tts
+2025-08-10 19:17:00,019 - INFO - Terminating worker process: video
+2025-08-10 19:17:00,045 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:17:00,046 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:17:00,062 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 19:17:00,063 - ERROR - Error sending JSON to user 1: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 577, in websocket_endpoint
+    message = await websocket.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 57, in receive
+    raise RuntimeError('Cannot call "receive" once a disconnect message has been received.')
+RuntimeError: Cannot call "receive" once a disconnect message has been received.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 295, in send_json
+    await self.active_connections[user_id].send_json(data)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 176, in send_json
+    await self.send({"type": "websocket.send", "text": text})
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 86, in send
+    await self._send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/_exception_handler.py", line 39, in sender
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 83, in send_wrapper
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/uvicorn/protocols/websockets/websockets_impl.py", line 360, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-08-10 19:17:00,064 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 19:17:53,239 - INFO - Using device: cpu
+2025-08-10 19:17:53,957 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:17:55,541 - INFO - TTS model loaded successfully.
+2025-08-10 19:17:55,647 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:18:00,651 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:18:03,798 - INFO - TTS worker process started for user 1.
+2025-08-10 19:18:03,800 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:18:03,800 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:18:06,238 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:18:06,339 - INFO - Terminating worker process: tts
+2025-08-10 19:18:06,364 - INFO - Terminating worker process: video
+2025-08-10 19:18:06,385 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:18:06,385 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:18:06,387 - INFO - TTS worker process started for user 1.
+2025-08-10 19:18:06,388 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:18:06,389 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:18:11,847 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:18:11,947 - INFO - Terminating worker process: tts
+2025-08-10 19:18:11,995 - INFO - Terminating worker process: video
+2025-08-10 19:18:12,032 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:18:12,032 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:18:12,035 - INFO - TTS worker process started for user 1.
+2025-08-10 19:18:12,036 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:18:12,036 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:18:13,976 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:18:14,077 - INFO - Terminating worker process: tts
+2025-08-10 19:18:14,106 - INFO - Terminating worker process: video
+2025-08-10 19:18:14,128 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:18:14,128 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:18:14,131 - INFO - TTS worker process started for user 1.
+2025-08-10 19:18:14,132 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:18:14,132 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:18:16,029 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:18:16,129 - INFO - Terminating worker process: tts
+2025-08-10 19:18:16,149 - INFO - Terminating worker process: video
+2025-08-10 19:18:16,168 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:18:16,169 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:18:16,171 - INFO - TTS worker process started for user 1.
+2025-08-10 19:18:16,172 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:18:16,172 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:18:26,669 - INFO - Using device: cpu
+2025-08-10 19:18:26,818 - INFO - Using device: cpu
+2025-08-10 19:18:27,336 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:18:27,579 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:18:29,877 - INFO - TTS model loaded successfully.
+2025-08-10 19:18:30,073 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:18:30,085 - INFO - TTS worker process started with speaker: downloaded_media/1749534228.wav
+2025-08-10 19:18:30,174 - INFO - TTS model loaded successfully.
+2025-08-10 19:18:30,392 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:18:30,401 - INFO - Video sync worker: Started with video_path=downloaded_media/1749534228.mp4, temp_dir=./temp
+2025-08-10 19:18:32,329 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 19:18:38,076 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:18:38,177 - INFO - Terminating worker process: tts
+2025-08-10 19:18:38,315 - INFO - Terminating worker process: video
+2025-08-10 19:18:38,380 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:18:38,380 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:18:38,382 - INFO - TTS worker process started for user 1.
+2025-08-10 19:18:38,383 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:18:38,383 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:18:40,601 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:18:40,702 - INFO - Terminating worker process: tts
+2025-08-10 19:18:40,736 - INFO - Terminating worker process: video
+2025-08-10 19:18:40,762 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:18:40,762 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:18:40,767 - INFO - TTS worker process started for user 1.
+2025-08-10 19:18:40,770 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:18:40,770 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:18:44,435 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:18:44,536 - INFO - Terminating worker process: tts
+2025-08-10 19:18:44,573 - INFO - Terminating worker process: video
+2025-08-10 19:18:44,623 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:18:44,623 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:18:44,626 - INFO - TTS worker process started for user 1.
+2025-08-10 19:18:44,626 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:18:44,626 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:18:46,648 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:18:46,749 - INFO - Terminating worker process: tts
+2025-08-10 19:18:46,784 - INFO - Terminating worker process: video
+2025-08-10 19:18:46,807 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:18:46,807 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:18:46,811 - INFO - TTS worker process started for user 1.
+2025-08-10 19:18:46,813 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:18:46,813 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:18:48,910 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:18:49,011 - INFO - Terminating worker process: tts
+2025-08-10 19:18:49,036 - INFO - Terminating worker process: video
+2025-08-10 19:18:49,056 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:18:49,057 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:18:49,059 - INFO - TTS worker process started for user 1.
+2025-08-10 19:18:49,060 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:18:49,060 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:18:50,826 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:18:50,926 - INFO - Terminating worker process: tts
+2025-08-10 19:18:50,958 - INFO - Terminating worker process: video
+2025-08-10 19:18:50,988 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:18:50,988 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:18:50,993 - INFO - TTS worker process started for user 1.
+2025-08-10 19:18:51,010 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:18:51,010 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:18:56,817 - INFO - Authentication successful for user: admin
+2025-08-10 19:18:57,208 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:18:58,218 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:18:58,318 - INFO - Terminating worker process: tts
+2025-08-10 19:18:58,372 - INFO - Terminating worker process: video
+2025-08-10 19:18:58,417 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:18:58,417 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:18:58,420 - INFO - TTS worker process started for user 1.
+2025-08-10 19:18:58,421 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:18:58,421 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:00,426 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:00,527 - INFO - Terminating worker process: tts
+2025-08-10 19:19:00,568 - INFO - Terminating worker process: video
+2025-08-10 19:19:00,605 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:00,605 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:00,608 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:00,610 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:00,610 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:02,813 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:02,914 - INFO - Terminating worker process: tts
+2025-08-10 19:19:02,946 - INFO - Terminating worker process: video
+2025-08-10 19:19:02,972 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:02,973 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:02,976 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:02,978 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:02,979 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:04,812 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:04,913 - INFO - Terminating worker process: tts
+2025-08-10 19:19:04,948 - INFO - Terminating worker process: video
+2025-08-10 19:19:04,982 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:04,982 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:04,985 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:04,987 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:04,987 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:06,716 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:06,817 - INFO - Terminating worker process: tts
+2025-08-10 19:19:06,859 - INFO - Terminating worker process: video
+2025-08-10 19:19:06,892 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:06,892 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:06,894 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:06,895 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:06,896 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:09,399 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:09,500 - INFO - Terminating worker process: tts
+2025-08-10 19:19:09,541 - INFO - Terminating worker process: video
+2025-08-10 19:19:09,575 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:09,576 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:09,581 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:09,584 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:09,584 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:20,490 - INFO - Using device: cpu
+2025-08-10 19:19:20,505 - INFO - Using device: cpu
+2025-08-10 19:19:21,412 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:19:21,789 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:19:23,933 - INFO - TTS model loaded successfully.
+2025-08-10 19:19:24,211 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:19:24,244 - INFO - TTS worker process started with speaker: downloaded_media/1852048276.wav
+2025-08-10 19:19:24,495 - INFO - TTS model loaded successfully.
+2025-08-10 19:19:24,501 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 19:19:24,504 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:24,607 - INFO - Terminating worker process: tts
+2025-08-10 19:19:24,710 - INFO - Terminating worker process: video
+2025-08-10 19:19:24,820 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:24,821 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:24,821 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 19:19:25,144 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:19:26,727 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 19:19:26,728 - ERROR - Error sending JSON to user 1: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 577, in websocket_endpoint
+    message = await websocket.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 57, in receive
+    raise RuntimeError('Cannot call "receive" once a disconnect message has been received.')
+RuntimeError: Cannot call "receive" once a disconnect message has been received.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 295, in send_json
+    await self.active_connections[user_id].send_json(data)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 176, in send_json
+    await self.send({"type": "websocket.send", "text": text})
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 86, in send
+    await self._send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/_exception_handler.py", line 39, in sender
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 83, in send_wrapper
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/uvicorn/protocols/websockets/websockets_impl.py", line 360, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-08-10 19:19:26,735 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 19:19:27,951 - INFO - Authentication successful for user: admin
+2025-08-10 19:19:28,343 - INFO - WebSocket connection established for user_id: 1
+2025-08-10 19:19:29,444 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:29,447 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:29,448 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:32,484 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:32,585 - INFO - Terminating worker process: tts
+2025-08-10 19:19:32,619 - INFO - Terminating worker process: video
+2025-08-10 19:19:32,657 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:32,657 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:32,659 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:32,661 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:32,662 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:36,789 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:36,889 - INFO - Terminating worker process: tts
+2025-08-10 19:19:36,927 - INFO - Terminating worker process: video
+2025-08-10 19:19:36,955 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:36,955 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:36,964 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:36,968 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:36,968 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:39,246 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:39,346 - INFO - Terminating worker process: tts
+2025-08-10 19:19:39,371 - INFO - Terminating worker process: video
+2025-08-10 19:19:39,402 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:39,403 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:39,407 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:39,408 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:39,408 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:41,519 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:41,620 - INFO - Terminating worker process: tts
+2025-08-10 19:19:41,656 - INFO - Terminating worker process: video
+2025-08-10 19:19:41,680 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:41,680 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:41,682 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:41,684 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:41,684 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:44,555 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:44,655 - INFO - Terminating worker process: tts
+2025-08-10 19:19:44,689 - INFO - Terminating worker process: video
+2025-08-10 19:19:44,725 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:44,726 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:44,729 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:44,731 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:44,731 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:47,178 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:47,279 - INFO - Terminating worker process: tts
+2025-08-10 19:19:47,305 - INFO - Terminating worker process: video
+2025-08-10 19:19:47,327 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:47,327 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:47,329 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:47,330 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:47,330 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:49,200 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:49,301 - INFO - Terminating worker process: tts
+2025-08-10 19:19:49,336 - INFO - Terminating worker process: video
+2025-08-10 19:19:49,361 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:49,362 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:49,365 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:49,367 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:49,367 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:19:50,883 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:19:50,984 - INFO - Terminating worker process: tts
+2025-08-10 19:19:51,012 - INFO - Terminating worker process: video
+2025-08-10 19:19:51,037 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:19:51,038 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:19:51,040 - INFO - TTS worker process started for user 1.
+2025-08-10 19:19:51,041 - INFO - Video sync worker process started for user 1.
+2025-08-10 19:19:51,041 - INFO - Video queue monitor task started for user 1.
+2025-08-10 19:20:01,319 - INFO - Using device: cpu
+2025-08-10 19:20:01,324 - INFO - Using device: cpu
+2025-08-10 19:20:02,008 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:20:02,009 - INFO - Faster Whisper model 'tiny' loaded successfully on cpu.
+2025-08-10 19:20:02,057 - ERROR - Could not load TTS model: Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 95, in <module>
+    tts_model = TTS("tts_models/multilingual/multi-dataset/your_tts").to(device)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/api.py", line 74, in __init__
+    self.load_tts_model_by_name(model_name, gpu)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/api.py", line 171, in load_tts_model_by_name
+    model_path, config_path, vocoder_path, vocoder_config_path, model_dir = self.download_model_by_name(
+                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/api.py", line 129, in download_model_by_name
+    model_path, config_path, model_item = self.manager.download_model(model_name)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/utils/manage.py", line 421, in download_model
+    self._update_paths(output_path, output_config_path)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/utils/manage.py", line 484, in _update_paths
+    self._update_path("model_args.d_vector_file", output_d_vector_file_path, config_path)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/utils/manage.py", line 503, in _update_path
+    config = load_config(config_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/config/__init__.py", line 92, in load_config
+    data = read_json_with_comments(config_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/TTS/config/__init__.py", line 21, in read_json_with_comments
+    return json.loads(input_str)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/.local/share/uv/python/cpython-3.11.13-linux-x86_64-gnu/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/.local/share/uv/python/cpython-3.11.13-linux-x86_64-gnu/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/.local/share/uv/python/cpython-3.11.13-linux-x86_64-gnu/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2025-08-10 19:20:02,187 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:20:02,195 - INFO - TTS worker process started with speaker: downloaded_media/1852048276.wav
+2025-08-10 19:20:04,094 - INFO - TTS model loaded successfully in worker process.
+2025-08-10 19:20:04,129 - INFO - TTS model loaded successfully.
+2025-08-10 19:20:04,265 - INFO - Groq LLM and Langchain chain initialized successfully.
+2025-08-10 19:20:04,273 - INFO - Video sync worker: Started with video_path=downloaded_media/1852048276.mp4, temp_dir=./temp
+2025-08-10 19:23:00,000 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 19:23:00,004 - ERROR - Error sending JSON to user 1: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 577, in websocket_endpoint
+    message = await websocket.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 57, in receive
+    raise RuntimeError('Cannot call "receive" once a disconnect message has been received.')
+RuntimeError: Cannot call "receive" once a disconnect message has been received.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bdc-ayushk/finaltest/app.py", line 295, in send_json
+    await self.active_connections[user_id].send_json(data)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 176, in send_json
+    await self.send({"type": "websocket.send", "text": text})
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/websockets.py", line 86, in send
+    await self._send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/_exception_handler.py", line 39, in sender
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 83, in send_wrapper
+    await send(message)
+  File "/home/bdc-ayushk/finaltest/edge/lib/python3.11/site-packages/uvicorn/protocols/websockets/websockets_impl.py", line 360, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-08-10 19:23:00,010 - INFO - Cleaning up session for user_id: 1
+2025-08-10 19:23:00,110 - INFO - Terminating worker process: tts
+2025-08-10 19:23:00,205 - INFO - Terminating worker process: video
+2025-08-10 19:23:00,285 - INFO - Cancelled monitor_task for user_id: 1
+2025-08-10 19:23:00,285 - INFO - Session for user_id: 1 cleaned up.
+2025-08-10 19:23:00,286 - INFO - WebSocket connection closed for user_id: 1
+2025-08-10 19:23:05,206 - ERROR - WebSocket processing error for user 1: Cannot call "receive" once a disconnect message has been received.
+2025-08-10 19:23:05,206 - INFO - WebSocket connection closed for user_id: 1

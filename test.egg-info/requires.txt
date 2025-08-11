@@ -1,0 +1,6 @@
+fastapi
+langchain
+librosa
+langchain_core
+numpy
+ffmpeg-python

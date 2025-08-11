@@ -1,0 +1,539 @@
+:root {
+  --bg-white: #ffffff;
+  --bg-light: #f9fafb;
+  --bg-dark: #1f2937;
+  --bg-deep-dark: #111827;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-light: #f3f4f6;
+  --border-color: #d1d5db;
+  --radius: 0.5rem;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --btn-primary-bg: #3b82f6;
+  --btn-primary-hover: #2563eb;
+  --btn-danger-bg: #ef4444;
+  --btn-danger-hover: #dc2626;
+  --btn-success-bg: #10b981;
+  --status-listening-bg: #fde047; /* Yellow for listening */
+  --status-listening-text: #713f12;
+}
+
+body[data-theme="dark"] {
+  --bg-white: #111827;
+  --bg-light: #1f2937;
+  --bg-dark: #111827;
+  --bg-deep-dark: #000000; /* Adjusted for dark mode background */
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --border-color: #374151;
+  --text-light: #d1d5db;
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-deep-dark); /* Use for main app background */
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+  display: flex;
+  flex-direction: column; /* Default for main app layout */
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Header */
+.header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-light);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px; /* Added from original layout.html */
+  margin: 0 auto; /* Added from original layout.html */
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Main Layout */
+.main-container {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+  /* Prevent body scroll */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 280px; /* Adjusted to 280px from layout.html */
+  background-color: var(--bg-dark); /* Adjusted to bg-dark from layout.html */
+  padding: 1.5rem;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border-color); /* Kept from previous styles */
+  transition: width 0.3s ease;
+  overflow-y: auto; /* Added from layout.html */
+}
+
+.sidebar h3 {
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+}
+
+.nav-links {
+  list-style-type: none;
+}
+
+.nav-links li a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0;
+  border-radius: var(--radius);
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-links li a:hover {
+  background-color: var(--btn-primary-bg);
+  color: white;
+}
+
+.nav-links li a.active {
+  background-color: var(--btn-primary-bg);
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+/* Content Area */
+.content-area {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  background-color: var(--bg-white); /* This should be bg-white for content area */
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Section Specific Styling */
+.section-header {
+  margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.section-header p {
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+
+/* Avatar Selection */
+#avatar-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjusted to 150px from layout.html */
+  gap: 1.5rem;
+  margin-top: 1rem; /* Added from layout.html */
+}
+
+.avatar-card-select {
+  background: var(--bg-light);
+  border-radius: var(--radius);
+  overflow: hidden;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease-in-out;
+  box-shadow: var(--shadow); /* Added from previous styles */
+}
+
+.avatar-card-select:hover {
+  transform: translateY(-4px); /* Adjusted from layout.html */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Adjusted from layout.html */
+}
+
+.avatar-card-select.selected {
+  border-color: var(--btn-primary-bg);
+  box-shadow: 0 0 15px var(--btn-primary-bg); /* Adjusted from layout.html */
+}
+
+.avatar-card-select img {
+  width: 100%;
+  height: 150px; /* Adjusted to 150px from layout.html */
+  object-fit: cover;
+  display: block;
+}
+
+.avatar-card-select p {
+  padding: 0.75rem; /* Adjusted from layout.html */
+  font-weight: 600;
+  background-color: var(--bg-white); /* Added from previous styles */
+  border-top: 1px solid var(--border-color); /* Added from previous styles */
+}
+
+
+/* Talking Head Interaction */
+#talking-head-container {
+  width: 100%;
+  max-width: 750px; /* Adjusted to 800px from layout.html */
+  margin: 2rem auto; /* Adjusted to 2rem from layout.html */
+  background-color: var(--bg-light);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow); /* Adjusted from layout.html */
+}
+
+#video-container {
+    width: 100%;
+    aspect-ratio: 12/12;
+    background-color: #000;
+    overflow: hidden; 
+    border-radius: inherit;
+}
+
+#video-container video {
+  width: 100%;
+  height: 100%;             
+  object-fit: cover;          
+  display: block;
+}
+
+.interaction-panel {
+  padding: 1.5rem;
+  background-color: var(--bg-white);
+  border-top: 1px solid var(--border-color);
+}
+
+.status-bar {
+  color: var(--status-color, #9ca3af); /* Adjusted from layout.html */
+  font-style: italic; /* Adjusted from layout.html */
+  text-align: center;
+  min-height: 24px;
+  padding: 0.5rem; /* Added from previous styles */
+  border-radius: var(--radius); /* Added from previous styles */
+  font-weight: 600; /* Added from previous styles */
+  margin-bottom: 1rem; /* Added from previous styles */
+  transition: all 0.3s;
+}
+
+.status-bar.info {
+  background-color: var(--bg-light);
+  color: var(--text-secondary);
+}
+
+.status-bar.listening {
+  background-color: var(--status-listening-bg);
+  color: var(--status-listening-text);
+  animation: pulse 1s infinite;
+}
+
+.status-bar.processing {
+  background-color: var(--btn-primary-bg);
+  color: white;
+}
+
+.status-bar.error {
+  background-color: var(--btn-danger-bg);
+  color: white;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(253, 224, 71, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(253, 224, 71, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(253, 224, 71, 0);
+  }
+}
+
+
+.transcripts {
+  margin-top: 1rem; /* Added from layout.html */
+  padding: 1rem;
+  background-color: var(--bg-light);
+  border-radius: var(--radius);
+  min-height: 100px; /* Adjusted from layout.html */
+  line-height: 1.6; /* Added from previous styles */
+}
+
+.transcripts p {
+  margin: 0; /* Adjusted from layout.html */
+}
+
+.transcripts .user {
+  color: var(--btn-primary-bg);
+  font-weight: bold;
+}
+
+.transcripts .assistant {
+  color: var(--text-primary);
+}
+
+
+/* Placeholder Pages */
+.placeholder-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: var(--bg-light);
+  padding: 4rem 2rem;
+  border-radius: var(--radius);
+  border: 2px dashed var(--border-color);
+}
+
+.placeholder-card .icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.placeholder-card h2 {
+  font-size: 1.75rem;
+  color: var(--text-primary);
+}
+
+.placeholder-card p {
+  color: var(--text-secondary);
+  max-width: 400px;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: none;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--btn-primary-bg);
+  border: 2px solid var(--btn-primary-bg);
+}
+
+.btn-outline:hover {
+  background-color: var(--btn-primary-bg);
+  color: white;
+}
+
+/* Specific button styles (kept from previous example) */
+.btn-primary {
+    background-color: var(--btn-primary-bg);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: var(--btn-primary-hover);
+}
+
+.btn-danger {
+    background-color: var(--btn-danger-bg);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-danger:hover {
+    background-color: var(--btn-danger-hover);
+}
+
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem;
+    height: auto;
+  }
+
+  .sidebar h3 {
+    display: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .nav-links li a {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .content-area {
+    padding: 1rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Login Page Specific Styles - Encapsulated with increased specificity */
+.login-page-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--bg-dark);
+  /* Use bg-dark for the overall background */
+  flex-direction: row;
+  /* Override default column for login page centering */
+}
+
+.login-page-body .login-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--bg-deep-dark);
+  /* Darker background for the card as per image */
+  padding: 2.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.login-page-body .login-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+}
+
+.login-page-body .login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Styles for input fields on the login page */
+.login-page-body .input-field {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  background-color: var(--bg-white);
+  /* White background for input fields */
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-page-body .input-field::placeholder {
+  color: var(--text-secondary);
+}
+
+.login-page-body .input-field:focus {
+  outline: none;
+  border-color: var(--btn-primary-bg);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Styles for primary button on the login page */
+.login-page-body .btn-primary {
+  background-color: var(--btn-primary-bg);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.login-page-body .btn-primary:hover {
+  background-color: var(--btn-primary-hover);
+}
+
+.login-page-body .error-message {
+  background-color: var(--btn-danger-bg);
+  color: white;
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  text-align: center;
+  margin-top: 1rem;
+}

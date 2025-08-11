@@ -1,6 +1,6 @@
 set -e
 
-uv venv edge
+uv venv edge --python 3.11
 
 source edge/bin/activate
 

@@ -20,7 +20,8 @@
 * torch == 2.5.1 , torchvision==0.20.1  , torchaudio==2.5.1
 * numpy==1.22.0
 
-## Installation
+## Installation 
+## [Manual way] :)
 
 1. **Clone the repository**
 
@@ -132,4 +133,10 @@ Avatar1_project-main/
 
 ---
 
+---
+* **or just simply execute run.sh**
+* ```bash
+  ./run.sh
+  ```
+---
 

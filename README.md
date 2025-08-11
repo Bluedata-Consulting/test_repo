@@ -140,3 +140,10 @@ Avatar1_project-main/
   ```
 ---
 
+---
+* **also to build CTranslate2 for faster-whisper for jetson-nano-orin[arm64]**
+* ```bash
+  ./ctran2.sh
+  ```
+---
+

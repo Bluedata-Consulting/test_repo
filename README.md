@@ -140,13 +140,13 @@ Avatar1_project-main/
   ```
 ---
 ---
-* **also to build CTranslate2 for faster-whisper for jetson-nano-orin[arm64]**
+* **OPTION-1:: also to build CTranslate2 for faster-whisper for jetson-nano-orin[arm64]**
 * ```bash
   ./ctran2.sh
   ```
 ---
 ---
-* **also downlaod the pre-build CTranslate2 wheel from the tags**
+* **OPTION-2:: can also downlaod the pre-build CTranslate2 wheel from the tags**
 * ```bash
   cd REPO_NAME
   git fetch --tags

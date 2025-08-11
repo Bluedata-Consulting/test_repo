@@ -139,11 +139,16 @@ Avatar1_project-main/
   ./run.sh
   ```
 ---
-
 ---
 * **also to build CTranslate2 for faster-whisper for jetson-nano-orin[arm64]**
 * ```bash
   ./ctran2.sh
   ```
 ---
-
+---
+* **also downlaod the pre-build CTranslate2 wheel from the tags**
+* ```bash
+  cd REPO_NAME
+  git fetch --tags
+  ```
+---

@@ -1,8 +1,8 @@
 set -e
 
-export CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-12.6
-export CUDAToolkit_ROOT=/usr/local/cuda-12.6
-export CUDACXX=/usr/local/cuda-12.6/bin/nvcc
+export CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda
+export CUDAToolkit_ROOT=/usr/local/cuda
+export CUDACXX=/usr/local/cuda/bin/nvcc
 
 git clone --recursive https://github.com/OpenNMT/CTranslate2.git
 

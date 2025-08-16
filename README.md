@@ -14,10 +14,9 @@
 ---
 ## Prerequisites
 
-* Python 3.11+
+* Python 3.10
 * linux / ubuntu / wsl
 * UV ⚡
-* torch == 2.5.1 , torchvision==0.20.1  , torchaudio==2.5.1
 * numpy==1.22.0
 
 ## Installation 

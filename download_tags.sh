@@ -10,9 +10,12 @@ TAGS=("CTranslate2" "torch_arm64")   # tags to fetch
 # === SCRIPT ===
 for TAG in "${TAGS[@]}"; do
   echo "Downloading tag: $TAG"
-  curl -L -H "Authorization: token $TOKEN" \
-       -o "${TAG}.tar.gz" \
-       "https://github.com/${USER}/${REPO}/archive/refs/tags/${TAG}.tar.gz"
+
+  curl -L \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer $TOKEN" \
+    -o "${TAG}.tar.gz" \
+    "https://api.github.com/repos/${USER}/${REPO}/tarball/${TAG}"
 
   echo "Extracting: ${TAG}.tar.gz"
   mkdir -p "${TAG}"

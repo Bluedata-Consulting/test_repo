@@ -27,10 +27,44 @@
 </div>
 
 <div id="vision-mode" class="page">
-    <div class="placeholder-card">
-        <div class="icon">👁️</div>
+    <div class="section-header">
         <h2>Vision Mode</h2>
-        <p>This feature is currently under development and will be available soon.</p>
+        <p>Interact with Gemini using your webcam and microphone.</p>
+    </div>
+    
+    <div class="vision-container">
+        <div class="camera-section">
+            <div class="video-wrapper">
+                <video id="webcam-video" autoplay playsinline muted></video>
+                <canvas id="webcam-canvas" style="display: none;"></canvas>
+            </div>
+            <div class="camera-controls">
+                <button id="startCameraBtn" class="btn btn-primary">Start Camera</button>
+                <button id="stopCameraBtn" class="btn btn-danger" style="display: none;">Stop Camera</button>
+            </div>
+        </div>
+        
+        <div class="interaction-section">
+            <div class="status-bar info" id="visionStatusBar">Start camera to begin</div>
+            <div class="transcripts">
+                <p id="vision-transcription-display"></p>
+                <p id="vision-response-display"></p>
+            </div>
+            
+            <div class="audio-controls">
+                <button id="visionSpeakBtn" class="btn btn-primary" disabled>
+                    <span id="micIcon">🎤</span> Hold to Speak
+                </button>
+                <div class="file-upload-section">
+                    <label for="imageUpload" class="btn btn-outline">Upload Image</label>
+                    <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                </div>
+            </div>
+            
+            <div class="response-audio">
+                <audio id="vision-audio-player" controls style="width: 100%; display: none;"></audio>
+            </div>
+        </div>
     </div>
 </div>
 

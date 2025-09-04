@@ -15,73 +15,58 @@ import json
 import soundfile as sf
 
 logging.basicConfig(
-    filename='useravatar.log',
+    filename='/home/bdc-ayushk/avatarr/log_dir/useravatar.log',
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
 @contextmanager
 def gpu_memory_manager():
+    """A context manager to handle GPU memory."""
     try:
         torch.cuda.empty_cache()
         yield
     finally:
-        # 'out' might not always be defined, handle gracefully
-        try:
-            del out
-        except NameError:
-            pass
         torch.cuda.empty_cache()
         torch.cuda.ipc_collect()
 
-from pathlib import Path
-
-def video_sync_worker(audio_queue, video_queue, user_avatar_id, stop_event, temp_dir):
-    logging.info(f"Video sync worker: Started with user_avatar_id={user_avatar_id}, temp_dir={temp_dir}")
+def video_sync_worker(audio_queue, video_queue, video_path, stop_event, temp_dir):
+    """
+    Worker process to synchronize video with audio from a queue.
+    """
+    logging.info(f"Video sync worker started for video: {video_path}")
+    
     while not stop_event.is_set():
         try:
             audio_path = audio_queue.get(timeout=1)
-            logging.info(f"Video sync worker: Received audio_path={audio_path}")
-
+            
             if audio_path == "__END_OF_RESPONSE__":
-                logging.info("Video sync worker: Received __END_OF_RESPONSE__, signaling end to video_queue.")
+                logging.info("Video sync worker received end-of-response signal.")
                 video_queue.put("__END_OF_RESPONSE__")
-                break  # Stop the worker loop
+                break
 
-            if audio_path is None: 
-                logging.info("Video sync worker: Received None audio path, waiting for next query.")
-                continue
-
-            # Determine video paths based on user avatar ID
-            ideal_video_path = os.path.join( user_avatar_id)
-            lip_sync_video_path = os.path.join( user_avatar_id.replace(".mp4", "_lip.mp4"))
-
-            # Check if video files exist
-            if not os.path.exists(ideal_video_path):
-                logging.error(f"Ideal video file not found: {ideal_video_path}")
-                continue
-
-            if not os.path.exists(lip_sync_video_path):
-                logging.error(f"Lip-sync video file not found: {lip_sync_video_path}")
+            if not audio_path or not os.path.exists(audio_path):
+                logging.warning(f"Invalid or non-existent audio path received: {audio_path}")
                 continue
 
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
             output_path = os.path.join(temp_dir, f"synced_video_{timestamp}.mp4")
 
             try:
-                # Sync audio with lip-sync video
-                synced_path = sync_video_with_audio(lip_sync_video_path, audio_path, output_path)
+                synced_path = sync_video_with_audio(video_path, audio_path, output_path)
                 if synced_path:
                     video_queue.put(synced_path)
-                    logging.info(f"Video sync worker: Synced video at {synced_path}")
+                    logging.info(f"Successfully synced and queued video: {synced_path}")
             except Exception as e:
-                logging.error(f"Error syncing video: {str(e)}")
+                logging.error(f"Failed to sync video for audio {audio_path}: {e}", exc_info=True)
+
         except Empty:
             continue
         except Exception as e:
-            logging.error(f"Error in video sync worker loop: {str(e)}")
-
-    logging.info("Video sync worker: Shutting down due to stop_event")
+            logging.error(f"An unexpected error occurred in the video sync worker: {e}", exc_info=True)
+            break
+            
+    logging.info("Video sync worker shutting down.")
 
 def sync_video_with_audio(video_path, audio_path, output_path):
     try:
@@ -200,7 +185,7 @@ def get_media_duration(media_path):
         'ffprobe', 
         '-v', 'error', 
         '-show_entries', 'format=duration', 
-        '-of', 'default=noprint_wrappers=1:nokey=1', 
+        '-of', 'default=noprint_wrappers=1:nokey=1',
         media_path
     ]
     

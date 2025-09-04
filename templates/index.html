@@ -7,6 +7,31 @@
         <div id="avatar-selection-grid">
             <p>Loading avatars...</p>
         </div>
+        <div class="schedule-setup-container">
+            <h3><span class="icon">⏰</span> Set an Alarm</h3>
+            <p>Set a time and a purpose. When you enable the schedule, an avatar will be automatically selected.</p>
+            <div class="form-group">
+                <label for="main-schedule-time">Time</label>
+
+                <div class="time-picker-container">
+                    <select id="schedule-hour" class="form-input time-select">
+                        <!-- Hours 1-12 will be populated by JS -->
+                    </select>
+                    <select id="schedule-minute" class="form-input time-select">
+                        <!-- Minutes 00-59 will be populated by JS -->
+                    </select>
+                    <select id="schedule-ampm" class="form-input time-select">
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="main-schedule-purpose">Purpose</label>
+                <input type="text" id="main-schedule-purpose" class="form-input" placeholder="e.g., Time for your daily meditation">
+            </div>
+             <p id="save-schedule-status" class="status-message"></p>
+        </div>
     </div>
 
     <div id="step2-interaction" style="display: none;">
@@ -14,8 +39,29 @@
         <div id="talking-head-container">
             <div id="video-container">
                 <video id="avatar-video" autoplay playsinline></video>
+                <!-- Webcam viewer will overlay here -->
+                <div id="webcam-container" style="display: none;">
+                    <video id="webcam-video" autoplay playsinline muted></video>
+                    <canvas id="webcam-canvas" style="display: none;"></canvas>
                 </div>
+            </div>
             <div class="interaction-panel">
+                 <div class="controls-container">
+                    <div class="control-group">
+                        <label for="vision-toggle" class="toggle-label">👁️ Vision</label>
+                        <label class="switch">
+                            <input type="checkbox" id="vision-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label for="schedule-toggle" class="toggle-label">⏰ Schedule</label>
+                        <label class="switch">
+                            <input type="checkbox" id="schedule-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
                 <div class="status-bar info" id="statusBar">Select an avatar to begin</div>
                 <div class="transcripts">
                     <p id="transcription-display"></p>
@@ -23,55 +69,54 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<div id="vision-mode" class="page">
-    <div class="section-header">
-        <h2>Vision Mode</h2>
-        <p>Interact with Gemini using your webcam and microphone.</p>
-    </div>
-    
-    <div class="vision-container">
-        <div class="camera-section">
-            <div class="video-wrapper">
-                <video id="webcam-video" autoplay playsinline muted></video>
-                <canvas id="webcam-canvas" style="display: none;"></canvas>
-            </div>
-            <div class="camera-controls">
-                <button id="startCameraBtn" class="btn btn-primary">Start Camera</button>
-                <button id="stopCameraBtn" class="btn btn-danger" style="display: none;">Stop Camera</button>
-            </div>
-        </div>
         
-        <div class="interaction-section">
-            <div class="status-bar info" id="visionStatusBar">Start camera to begin</div>
-            <div class="transcripts">
-                <p id="vision-transcription-display"></p>
-                <p id="vision-response-display"></p>
+        <!-- Schedule Management Section -->
+        <div id="schedule-management" style="display: none; margin-top: 2rem;">
+            <div class="section-header">
+                <h3>Scheduled Alarms</h3>
+                <p>Manage your scheduled alarms</p>
             </div>
-            
-            <div class="audio-controls">
-                <button id="visionSpeakBtn" class="btn btn-primary" disabled>
-                    <span id="micIcon">🎤</span> Hold to Speak
-                </button>
-                <div class="file-upload-section">
-                    <label for="imageUpload" class="btn btn-outline">Upload Image</label>
-                    <input type="file" id="imageUpload" accept="image/*" style="display: none;">
-                </div>
-            </div>
-            
-            <div class="response-audio">
-                <audio id="vision-audio-player" controls style="width: 100%; display: none;"></audio>
+            <div id="schedule-list">
+                <p>No schedules set yet.</p>
             </div>
         </div>
     </div>
 </div>
 
-<div id="scheduled-mode" class="page">
-    <div class="placeholder-card">
-        <div class="icon">🗓️</div>
-        <h2>Scheduled Mode</h2>
-        <p>This feature is currently under development and will be available soon.</p>
-    </div>
-</div>
+
+<script>
+    // Populate time picker dropdowns
+    document.addEventListener('DOMContentLoaded', function() {
+        const hourSelect = document.getElementById('schedule-hour');
+        const minuteSelect = document.getElementById('schedule-minute');
+        
+        // Populate hours (1-12)
+        for (let i = 1; i <= 12; i++) {
+            const option = document.createElement('option');
+            option.value = i.toString().padStart(2, '0');
+            option.textContent = i.toString().padStart(2, '0');
+            hourSelect.appendChild(option);
+        }
+        
+        // Populate minutes (00-59)
+        for (let i = 0; i < 60; i++) {
+            const option = document.createElement('option');
+            option.value = i.toString().padStart(2, '0');
+            option.textContent = i.toString().padStart(2, '0');
+            minuteSelect.appendChild(option);
+        }
+        
+        // Set default time to current time
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const displayHours = hours % 12 || 12;
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        
+        hourSelect.value = displayHours.toString().padStart(2, '0');
+        minuteSelect.value = minutes.toString().padStart(2, '0');
+        document.getElementById('schedule-ampm').value = ampm;
+    });
+</script>
+
+<script src="/static/scripts.js"></script>

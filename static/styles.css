@@ -537,3 +537,377 @@ a {
   text-align: center;
   margin-top: 1rem;
 }
+
+/* ... existing styles ... */
+
+/* Vision Mode Styles */
+.vision-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- NEW STYLES FOR INTEGRATED UI --- */
+
+/* Schedule Setup on Avatar Selection Screen */
+.schedule-setup-container {
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-top: 2rem;
+    max-width: 600px;
+}
+
+.schedule-setup-container h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.schedule-setup-container p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background-color: var(--bg-white);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.status-message {
+    margin-top: 1rem;
+    color: var(--btn-success-bg);
+    font-weight: 500;
+}
+
+
+/* Controls on Interaction Screen */
+.controls-container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.toggle-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Modern Toggle Switch Styles */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #4b5563;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--btn-primary-bg);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--btn-primary-bg);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+/* Webcam View Container */
+#webcam-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 250px;
+    height: 187px; /* 4:3 aspect ratio */
+    border: 3px solid var(--btn-primary-bg);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    z-index: 10;
+    background-color: #000;
+}
+
+#webcam-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.camera-section {
+    background-color: var(--bg-light);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.camera-controls {
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.interaction-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.interaction-section .status-bar {
+    text-align: center;
+    min-height: 24px;
+    padding: 0.75rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.file-upload-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.response-audio {
+    margin-top: 1rem;
+}
+
+/* Schedule Management */
+.schedule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--bg-light);
+    border-radius: var(--radius);
+    margin-bottom: 0.5rem;
+}
+
+.schedule-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.schedule-info strong {
+    font-size: 1.1rem;
+}
+
+.schedule-info span {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.schedule-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.schedule-status.enabled {
+    background-color: var(--btn-success-bg);
+    color: white;
+}
+
+.schedule-status.disabled {
+    background-color: var(--text-secondary);
+    color: white;
+}
+
+/* Notification Styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 300px;
+    max-width: 500px;
+    animation: slideIn 0.3s ease-out;
+    font-weight: 500;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notification-info {
+    background-color: #e1f0fa;
+    color: #1a56bb;
+    border-left: 4px solid #1a56bb;
+}
+
+.notification-success {
+    background-color: #daf4e4;
+    color: #0e9f6e;
+    border-left: 4px solid #0e9f6e;
+}
+
+.notification-error {
+    background-color: #fde8e8;
+    color: #e02d2d;
+    border-left: 4px solid #e02d2d;
+}
+
+.notification-warning {
+    background-color: #fdf6eb;
+    color: #d07309;
+    border-left: 4px solid #d07309;
+}
+
+.notification-message {
+    flex-grow: 1;
+    margin-right: 15px;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.notification-close:hover {
+    opacity: 1;
+}
+
+/* Responsive Design for Vision Mode */
+@media (max-width: 992px) {
+    .vision-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .camera-section, .interaction-section {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .vision-container {
+        gap: 1rem;
+    }
+    
+    .camera-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .camera-controls .btn {
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    .notification {
+        min-width: 250px;
+        max-width: calc(100vw - 40px);
+        right: 20px;
+        left: 20px;
+    }
+}

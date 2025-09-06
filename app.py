@@ -46,17 +46,27 @@ from langchain_core.runnables import RunnableConfig
 
 # Langfuse integration
 from langfuse.langchain import CallbackHandler
-from langfuse import observe
+from langfuse import observe , Langfuse , get_client
 
 # Gemini imports for image processing
 import google.generativeai as genai
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
 import uvicorn
+from opik import configure, track 
 
 # --- Local Imports ---
 from workers import video_sync_worker
 from auth import authenticate_user # Retained as requested
+
+# langfuse = get_client()
+configure() 
+
+#langfuse = Langfuse(
+#public_key = "pk-lf-d31640cc-1be7-4174-b383-65a62ffd4a04",
+#secret_key = "sk-lf-ffbce418-f152-49ba-8116-ec2e6652b643",
+#host = "https://cloud.langfuse.com" )
+
 
 # --- Basic Configuration ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -128,7 +138,7 @@ if not os.path.exists(DEFAULT_SPEAKER_WAV):
 whisper_model = None
 try:
     print("Loading Whisper model...")
-    whisper_model = WhisperModel("tiny", device='cpu')
+    whisper_model = WhisperModel("tiny", device=device, compute_type="float16")
     logging.info(f"Faster Whisper model 'tiny' loaded successfully on {device}.")
 except Exception as e:
     logging.error(f"Could not load Faster Whisper model: {e}")
@@ -454,6 +464,7 @@ def ensure_user_workers(user_id: str, avatar_data: Dict | None = None) -> bool:
         return False
 
 # --- Initialize TTS for Vision Mode (or any non-avatar session) ---
+
 def initialize_default_tts(user_id: str):
     """Initialize a default TTS worker for sessions without a selected avatar."""
     if user_id in user_sessions:
@@ -539,6 +550,7 @@ class AvatarState(TypedDict):
     response_complete: bool
 
 # --- LangGraph Node Functions ---
+@track 
 async def stt_node(state: AvatarState) -> dict:
     """Transcribe audio or use provided text. Check for trigger word if required."""
     logging.info(f"STT Node: Processing for user {state['user_id']} in mode {state['mode']}")
@@ -592,6 +604,7 @@ async def stt_node(state: AvatarState) -> dict:
         "contains_trigger": contains_trigger
     }
 
+@track 
 async def llm_node(state: AvatarState) -> dict:
     """Process transcription with LLM and stream response, handling different modes.
     For 'schedule' mode this returns exactly one short rephrased sentence
@@ -705,7 +718,8 @@ async def llm_node(state: AvatarState) -> dict:
                 # stream and split into sentence chunks as before
                 buffer = ""
                 sentence_splitter = re.compile(r'([.!?])')
-                async for chunk_text in llm_only_chain.astream({"input": transcription}, config={"callbacks": [CallbackHandler()]}):
+                langfuse_handler = CallbackHandler()
+                async for chunk_text in llm_only_chain.astream({"input": transcription}, config={"callbacks": [langfuse_handler]}):
                     if not chunk_text:
                         continue
                     buffer += chunk_text
@@ -738,7 +752,7 @@ async def llm_node(state: AvatarState) -> dict:
 
     return {"llm_response": response_text, "response_complete": True}
 
-
+@track 
 async def tts_node(state: AvatarState) -> dict:
     """Placeholder for TTS node - actual TTS is handled by worker processes."""
     logging.info(f"TTS Node: TTS handled by worker for user {state['user_id']}")

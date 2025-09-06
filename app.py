@@ -1,4 +1,5 @@
 
+
 import os
 import logging
 import time
@@ -14,6 +15,7 @@ from werkzeug.utils import secure_filename
 from pydub import AudioSegment
 from pydub.exceptions import PydubException
 from datetime import datetime
+from num2words import num2words
 try:
     from zoneinfo import ZoneInfo  # py3.9+
 except Exception:
@@ -46,7 +48,7 @@ from langchain_core.runnables import RunnableConfig
 
 # Langfuse integration
 from langfuse.langchain import CallbackHandler
-from langfuse import observe , Langfuse , get_client
+from langfuse import observe
 
 # Gemini imports for image processing
 import google.generativeai as genai
@@ -54,10 +56,6 @@ from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
 import uvicorn
 from opik import configure, track 
-
-# --- Local Imports ---
-from workers import video_sync_worker
-from auth import authenticate_user # Retained as requested
 
 # langfuse = get_client()
 configure() 
@@ -67,6 +65,9 @@ configure()
 #secret_key = "sk-lf-ffbce418-f152-49ba-8116-ec2e6652b643",
 #host = "https://cloud.langfuse.com" )
 
+# --- Local Imports ---
+from workers import video_sync_worker
+from auth import authenticate_user # Retained as requested
 
 # --- Basic Configuration ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -95,6 +96,33 @@ user_sessions: Dict[str, Dict] = {}
 # --- Schedule Storage (Persistent) ---
 schedule_storage_file = "schedules.json"
 
+def cleanup_duplicate_schedules(schedules):
+    """Removes duplicate schedules for each user."""
+    cleaned_schedules = {}
+    changed = False
+    for user_id, user_schedules in schedules.items():
+        if not isinstance(user_schedules, list):
+            cleaned_schedules[user_id] = user_schedules
+            continue
+
+        unique_schedules = []
+        seen = set()
+        for schedule in user_schedules:
+            if isinstance(schedule, dict):
+                # A schedule is a tuple of its values for hashing
+                key = tuple(sorted(schedule.items()))
+                if key not in seen:
+                    unique_schedules.append(schedule)
+                    seen.add(key)
+                else:
+                    changed = True  # Found a duplicate
+            else:
+                unique_schedules.append(schedule)  # Keep non-dict items as is
+        
+        cleaned_schedules[user_id] = unique_schedules
+    
+    return cleaned_schedules, changed
+
 def load_schedules():
     """Load schedules from persistent storage"""
     try:
@@ -113,8 +141,13 @@ def save_schedules(schedules):
     except Exception as e:
         logging.error(f"Error saving schedules: {e}")
 
-# Load schedules at startup
+# Load schedules at startup and clean duplicates
 persistent_schedules = load_schedules()
+persistent_schedules, schedules_changed = cleanup_duplicate_schedules(persistent_schedules)
+if schedules_changed:
+    logging.info("Removed duplicate schedules and saved the cleaned file.")
+    save_schedules(persistent_schedules)
+
 
 # --- Device Configuration ---
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -138,7 +171,7 @@ if not os.path.exists(DEFAULT_SPEAKER_WAV):
 whisper_model = None
 try:
     print("Loading Whisper model...")
-    whisper_model = WhisperModel("tiny", device=device, compute_type="float16")
+    whisper_model = WhisperModel("tiny", device='cuda', compute_type="float16")
     logging.info(f"Faster Whisper model 'tiny' loaded successfully on {device}.")
 except Exception as e:
     logging.error(f"Could not load Faster Whisper model: {e}")
@@ -464,7 +497,6 @@ def ensure_user_workers(user_id: str, avatar_data: Dict | None = None) -> bool:
         return False
 
 # --- Initialize TTS for Vision Mode (or any non-avatar session) ---
-
 def initialize_default_tts(user_id: str):
     """Initialize a default TTS worker for sessions without a selected avatar."""
     if user_id in user_sessions:
@@ -606,10 +638,7 @@ async def stt_node(state: AvatarState) -> dict:
 
 @track 
 async def llm_node(state: AvatarState) -> dict:
-    """Process transcription with LLM and stream response, handling different modes.
-    For 'schedule' mode this returns exactly one short rephrased sentence
-    (first sentence only) and queues only that single sentence to TTS.
-    """
+    """Process transcription with LLM and stream response, handling different modes."""
     logging.info(f"LLM Node: Processing for user {state['user_id']} in mode {state['mode']}")
     user_id = state['user_id']
     transcription = state['transcription']
@@ -617,47 +646,24 @@ async def llm_node(state: AvatarState) -> dict:
     image_data = state.get('image_data')
     response_text = ""
 
-    # helper: take first sentence up to punctuation
-    def first_sentence_only(text: str) -> str:
-        if not text:
-            return ""
-        # Split on first sentence terminator (.,!?), include terminator
-        m = re.search(r'^(.*?[\.!\?])(\s|$)', text.strip())
-        if m:
-            return m.group(1).strip()
-        # no punctuation — return the whole trimmed line
-        return text.strip()
-
-    # local fallback rephraser for schedule mode
-    def local_single_rephrase(base_text: str) -> str:
-        try:
-            m = re.search(r"(\d{1,2}:\d{2}).*?for\s+(.+?)[\.\!]?$", base_text, re.I)
-            if m:
-                time_part = m.group(1)
-                purpose = m.group(2)
-                return f"It's {time_part}. It's a great time to focus on {purpose}."
-            return base_text.strip().rstrip('.!')
-        except Exception:
-            return base_text
-
     async def send_to_client_and_tts(text: str):
         nonlocal response_text
         if not text:
             return
-        # only one chunk for schedule mode, but reuse this for others if needed
         response_text += text + " "
-        # send visible chunk once
         try:
             await manager.send_json({'type': 'llm_chunk', 'text': text}, user_id)
         except Exception:
             pass
-        # push single sentence to tts queue (if available)
         if user_id in user_sessions and 'tts_queue' in user_sessions[user_id]:
             user_sessions[user_id]['tts_queue'].put(text)
-            logging.debug(f"LLM Node: Sent single sentence to TTS queue: '{text}'")
+            logging.debug(f"LLM Node: Sent to TTS queue: '{text}'")
 
     try:
-        if mode == 'vision' and image_data:
+        if mode == 'schedule':
+            # For schedules, directly use the synthesized prompt.
+            await send_to_client_and_tts(transcription)
+        elif mode == 'vision' and image_data:
             if not gemini_model:
                 raise Exception("Gemini model not configured")
             logging.info("LLM Node: Using Gemini for multimodal processing.")
@@ -673,70 +679,36 @@ async def llm_node(state: AvatarState) -> dict:
                     }
                 )
                 txt = getattr(gemini_response, "text", None) or "I've processed your image but couldn't generate a response."
-                # for vision keep behavior similar to before but only send once
-                await send_to_client_and_tts(first_sentence_only(txt))
+                await send_to_client_and_tts(txt)
             except Exception as e:
                 logging.error(f"Error with Gemini processing: {e}")
                 await send_to_client_and_tts("Error processing your request.")
         else:
-            # schedule mode -> get a single rephrase
-            if mode == 'schedule':
-                # Prefer LLM rephrase if available
-                if llm and prompt and parser:
-                    try:
-                        schedule_prompt = ChatPromptTemplate.from_messages([
-                            ('system', (
-                                "You are concise. Rephrase the given short reminder into a single short spoken-style sentence suitable for TTS. "
-                                "Return only that single sentence."
-                            )),
-                            ('user', '{input}')
-                        ])
-                        schedule_chain = schedule_prompt | llm | parser
-                        out_text = schedule_chain.run({"input": transcription})
-                        # extract first non-empty line and then the first sentence
-                        lines = [ln.strip() for ln in (out_text or "").splitlines() if ln.strip()]
-                        chosen = lines[0] if lines else out_text or ""
-                        chosen = first_sentence_only(chosen)
-                        if not chosen:
-                            chosen = first_sentence_only(local_single_rephrase(transcription))
-                        await send_to_client_and_tts(chosen)
-                    except Exception as e:
-                        logging.error(f"Schedule LLM run failed: {e} — falling back to local")
-                        chosen = first_sentence_only(local_single_rephrase(transcription))
-                        await send_to_client_and_tts(chosen)
-                else:
-                    logging.info("LLM not configured for schedule mode; using local rephrase.")
-                    chosen = first_sentence_only(local_single_rephrase(transcription))
-                    await send_to_client_and_tts(chosen)
-
-            else:
-                # interactive mode (keep streaming behavior)
-                if not llm or not prompt or not parser:
-                    raise Exception("LLM components not configured")
-                logging.info("LLM Node: Using Langchain for text processing.")
-                llm_only_chain = prompt | llm | parser
-                # stream and split into sentence chunks as before
-                buffer = ""
-                sentence_splitter = re.compile(r'([.!?])')
-                langfuse_handler = CallbackHandler()
-                async for chunk_text in llm_only_chain.astream({"input": transcription}, config={"callbacks": [langfuse_handler]}):
-                    if not chunk_text:
-                        continue
-                    buffer += chunk_text
-                    await manager.send_json({'type': 'llm_chunk', 'text': chunk_text}, user_id)
+            # Interactive avatar mode
+            if not llm or not prompt or not parser:
+                raise Exception("LLM components not configured")
+            logging.info("LLM Node: Using Langchain for text processing.")
+            llm_only_chain = prompt | llm | parser
+            buffer = ""
+            sentence_splitter = re.compile(r'([.!?])')
+            async for chunk_text in llm_only_chain.astream({"input": transcription}, config={"callbacks": [CallbackHandler()]}):
+                if not chunk_text:
+                    continue
+                buffer += chunk_text
+                await manager.send_json({'type': 'llm_chunk', 'text': chunk_text}, user_id)
+                parts = sentence_splitter.split(buffer)
+                while len(parts) >= 3:
+                    sentence = (parts[0] + parts[1]).strip()
+                    if sentence and user_id in user_sessions and 'tts_queue' in user_sessions[user_id]:
+                        user_sessions[user_id]['tts_queue'].put(sentence)
+                        response_text += sentence + " "
+                        logging.debug(f"LLM Node (interactive): Sent to TTS queue: '{sentence}'")
+                    buffer = "".join(parts[2:])
                     parts = sentence_splitter.split(buffer)
-                    while len(parts) >= 3:
-                        sentence = (parts[0] + parts[1]).strip()
-                        if sentence and user_id in user_sessions and 'tts_queue' in user_sessions[user_id]:
-                            user_sessions[user_id]['tts_queue'].put(sentence)
-                            response_text += sentence + " "
-                            logging.debug(f"LLM Node (interactive): Sent to TTS queue: '{sentence}'")
-                        buffer = "".join(parts[2:])
-                        parts = sentence_splitter.split(buffer)
-                if buffer.strip():
-                    if user_id in user_sessions and 'tts_queue' in user_sessions[user_id]:
-                        user_sessions[user_id]['tts_queue'].put(buffer.strip())
-                        response_text += buffer.strip()
+            if buffer.strip():
+                if user_id in user_sessions and 'tts_queue' in user_sessions[user_id]:
+                    user_sessions[user_id]['tts_queue'].put(buffer.strip())
+                    response_text += buffer.strip()
 
         # signal end-of-response to TTS worker
         if user_id in user_sessions and 'tts_queue' in user_sessions[user_id]:
@@ -1096,6 +1068,35 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
         cleanup_session(user_id)
         manager.disconnect(user_id)
 
+def time_to_words(time_str):
+    """Converts time in HH:MM format to a spoken-word string."""
+    try:
+        parts = time_str.split(':')
+        hour = int(parts[0])
+        minute = int(parts[1])
+
+        # Convert hour to 12-hour format and determine AM/PM
+        period = "AM"
+        if hour >= 12:
+            period = "PM"
+        if hour > 12:
+            hour -= 12
+        if hour == 0:
+            hour = 12
+
+        hour_words = num2words(hour)
+        
+        if minute == 0:
+            minute_words = "o'clock"
+        else:
+            minute_words = num2words(minute)
+
+        return f"It's {hour_words} {minute_words} {period}"
+    except Exception as e:
+        logging.error(f"Could not convert time '{time_str}' to words: {e}")
+        # Fallback to a simple format if conversion fails
+        return f"The time is {time_str}"
+
 # --- Scheduler Task (replaced with minute-aligned, timezone-aware and worker-ensuring version) ---
 async def scheduled_avatar_task():
     logging.info("Scheduled Avatar Task started.")
@@ -1122,6 +1123,7 @@ async def scheduled_avatar_task():
                 logging.debug(f"Checking schedules at {current_time_str}")
 
                 schedules_to_remove = {}
+                processed_this_minute = set() # To avoid processing duplicates for the same minute
 
                 # shallow copy of mapping keys to avoid mutation during iteration
                 schedules_copy = dict(persistent_schedules)
@@ -1149,6 +1151,11 @@ async def scheduled_avatar_task():
                             # stored_time should already be 'HH:MM' from normalization above.
                             # Compare directly
                             if stored_time == current_time_str:
+                                schedule_key = (u_id, stored_time, schedule_info.get('prompt', ''))
+                                if schedule_key in processed_this_minute:
+                                    continue # Already processed this schedule this minute
+                                processed_this_minute.add(schedule_key)
+
                                 logging.info(f"Scheduled time triggered for user {u_id} at {current_time_str}")
 
                                 # Ensure workers are running (will start them if missing)
@@ -1156,8 +1163,9 @@ async def scheduled_avatar_task():
                                 if not ok:
                                     logging.error(f"Failed to ensure workers for user {u_id} — skipping scheduled task")
                                     continue
-
-                                synthesized_prompt = f"It's {current_time_str}, time for {schedule_info.get('prompt', 'your scheduled activity')}."
+                                
+                                time_in_words = time_to_words(current_time_str)
+                                synthesized_prompt = f"{time_in_words}, time for {schedule_info.get('prompt', 'your scheduled activity')}."
                                 # Notify user (will only reach UI if websocket connected)
                                 try:
                                     await manager.send_json({'type': 'schedule_triggered', 'message': f'Scheduled event triggered: {synthesized_prompt}'}, u_id)

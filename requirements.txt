@@ -13,5 +13,10 @@ ffmpeg-python
 torchaudio
 numpy==1.24.4
 python-multipart
+num2words
+
+
+
+
 
 

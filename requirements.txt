@@ -1,6 +1,5 @@
 fastapi
 uvicorn[standard]
-groq
 langchain
 pydub
 librosa
@@ -10,13 +9,12 @@ langchain_groq
 langchain_core
 tts==0.22.0
 ffmpeg-python
-torchaudio
 numpy==1.24.4
 python-multipart
 num2words
-
-
-
-
-
+langgraph
+langfuse
+google.generativeai
+dotenv
+langchain_google_genai
 

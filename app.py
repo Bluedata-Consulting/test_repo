@@ -1,5 +1,4 @@
 
-
 import os
 import logging
 import time
@@ -15,7 +14,6 @@ from werkzeug.utils import secure_filename
 from pydub import AudioSegment
 from pydub.exceptions import PydubException
 from datetime import datetime
-from num2words import num2words
 try:
     from zoneinfo import ZoneInfo  # py3.9+
 except Exception:
@@ -48,26 +46,27 @@ from langchain_core.runnables import RunnableConfig
 
 # Langfuse integration
 from langfuse.langchain import CallbackHandler
-from langfuse import observe
+from langfuse import observe, Langfuse
 
 # Gemini imports for image processing
 import google.generativeai as genai
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
 import uvicorn
-from opik import configure, track 
-
-# langfuse = get_client()
-configure() 
-
-#langfuse = Langfuse(
-#public_key = "pk-lf-d31640cc-1be7-4174-b383-65a62ffd4a04",
-#secret_key = "sk-lf-ffbce418-f152-49ba-8116-ec2e6652b643",
-#host = "https://cloud.langfuse.com" )
+from num2words import num2words
 
 # --- Local Imports ---
 from workers import video_sync_worker
-from auth import authenticate_user # Retained as requested
+from auth import authenticate_user 
+from prompt_manager import prompt_manager
+
+from dotenv import load_dotenv
+load_dotenv()
+
+LANGFUSE_SECRET_KEY = os.getenv("LANGFUSE_SECRET_KEY")
+LANGFUSE_PUBLIC_KEY = os.getenv("LANGFUSE_PUBLIC_KEY")
+LANGFUSE_HOST = os.getenv("LANGFUSE_HOST", "https://cloud.langfuse.com")
+
 
 # --- Basic Configuration ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -96,33 +95,6 @@ user_sessions: Dict[str, Dict] = {}
 # --- Schedule Storage (Persistent) ---
 schedule_storage_file = "schedules.json"
 
-def cleanup_duplicate_schedules(schedules):
-    """Removes duplicate schedules for each user."""
-    cleaned_schedules = {}
-    changed = False
-    for user_id, user_schedules in schedules.items():
-        if not isinstance(user_schedules, list):
-            cleaned_schedules[user_id] = user_schedules
-            continue
-
-        unique_schedules = []
-        seen = set()
-        for schedule in user_schedules:
-            if isinstance(schedule, dict):
-                # A schedule is a tuple of its values for hashing
-                key = tuple(sorted(schedule.items()))
-                if key not in seen:
-                    unique_schedules.append(schedule)
-                    seen.add(key)
-                else:
-                    changed = True  # Found a duplicate
-            else:
-                unique_schedules.append(schedule)  # Keep non-dict items as is
-        
-        cleaned_schedules[user_id] = unique_schedules
-    
-    return cleaned_schedules, changed
-
 def load_schedules():
     """Load schedules from persistent storage"""
     try:
@@ -141,13 +113,8 @@ def save_schedules(schedules):
     except Exception as e:
         logging.error(f"Error saving schedules: {e}")
 
-# Load schedules at startup and clean duplicates
+# Load schedules at startup
 persistent_schedules = load_schedules()
-persistent_schedules, schedules_changed = cleanup_duplicate_schedules(persistent_schedules)
-if schedules_changed:
-    logging.info("Removed duplicate schedules and saved the cleaned file.")
-    save_schedules(persistent_schedules)
-
 
 # --- Device Configuration ---
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -171,7 +138,7 @@ if not os.path.exists(DEFAULT_SPEAKER_WAV):
 whisper_model = None
 try:
     print("Loading Whisper model...")
-    whisper_model = WhisperModel("tiny", device='cuda', compute_type="float16")
+    whisper_model = WhisperModel("tiny", device=device, compute_type="float16")
     logging.info(f"Faster Whisper model 'tiny' loaded successfully on {device}.")
 except Exception as e:
     logging.error(f"Could not load Faster Whisper model: {e}")
@@ -272,6 +239,7 @@ def stt(input_audio_path):
         return None
 
 # --- TTS Worker Process ---
+@observe()
 def tts_worker_process(tts_queue: mp.Queue, audio_output_queue: mp.Queue, stop_event: mp.Event, speaker_wav_path: str):
     logging.info(f"TTS worker process started with speaker: {speaker_wav_path}")
     local_tts_model = None
@@ -497,6 +465,7 @@ def ensure_user_workers(user_id: str, avatar_data: Dict | None = None) -> bool:
         return False
 
 # --- Initialize TTS for Vision Mode (or any non-avatar session) ---
+
 def initialize_default_tts(user_id: str):
     """Initialize a default TTS worker for sessions without a selected avatar."""
     if user_id in user_sessions:
@@ -540,9 +509,30 @@ try:
     print("Setting up Google Gemini LLM...")
     llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=GEMINI_API_KEY)
     
+    # Try to get prompt from Langfuse first, fallback to local prompt manager
+    prompt_text = "You are a helpful assistant, your name is BlueAssistant. Keep your responses to a maximum of three sentences."
+    try:
+        if langfuse:
+            # First try to get the avatar_prompt from Langfuse
+            langfuse_prompt = langfuse.get_prompt("avatar_prompt")
+            prompt_text = langfuse_prompt.prompt
+            logging.info("Loaded avatar_prompt from Langfuse")
+        else:
+            # Try to get avatar_prompt from local manager first, then fallback to avatar_assistant
+            try:
+                local_prompt = prompt_manager.get_current_prompt("avatar_prompt")
+                prompt_text = local_prompt["prompt"]
+                logging.info("Loaded avatar_prompt from local prompt manager")
+            except:
+                local_prompt = prompt_manager.get_current_prompt("avatar_assistant")
+                prompt_text = local_prompt["prompt"]
+                logging.info("Loaded avatar_assistant from local prompt manager")
+    except Exception as e:
+        logging.warning(f"Could not load prompt from Langfuse or local manager: {e}. Using default prompt.")
+    
     # Prompt Template
     prompt_template = [
-        ('system', 'You are a helpful assistant, your name is BlueAssistant. Keep your responses to a maximum of three sentences.'),
+        ('system', prompt_text),
         ('user', '{input}')
     ]
     prompt = ChatPromptTemplate.from_messages(prompt_template)
@@ -582,7 +572,7 @@ class AvatarState(TypedDict):
     response_complete: bool
 
 # --- LangGraph Node Functions ---
-@track 
+@observe()
 async def stt_node(state: AvatarState) -> dict:
     """Transcribe audio or use provided text. Check for trigger word if required."""
     logging.info(f"STT Node: Processing for user {state['user_id']} in mode {state['mode']}")
@@ -636,9 +626,12 @@ async def stt_node(state: AvatarState) -> dict:
         "contains_trigger": contains_trigger
     }
 
-@track 
+@observe()
 async def llm_node(state: AvatarState) -> dict:
-    """Process transcription with LLM and stream response, handling different modes."""
+    """Process transcription with LLM and stream response, handling different modes.
+    For 'schedule' mode this returns exactly one short rephrased sentence
+    (first sentence only) and queues only that single sentence to TTS.
+    """
     logging.info(f"LLM Node: Processing for user {state['user_id']} in mode {state['mode']}")
     user_id = state['user_id']
     transcription = state['transcription']
@@ -646,24 +639,47 @@ async def llm_node(state: AvatarState) -> dict:
     image_data = state.get('image_data')
     response_text = ""
 
+    # helper: take first sentence up to punctuation
+    def first_sentence_only(text: str) -> str:
+        if not text:
+            return ""
+        # Split on first sentence terminator (.,!?), include terminator
+        m = re.search(r'^(.*?[\.!\?])(\s|$)', text.strip())
+        if m:
+            return m.group(1).strip()
+        # no punctuation — return the whole trimmed line
+        return text.strip()
+
+    # local fallback rephraser for schedule mode
+    def local_single_rephrase(base_text: str) -> str:
+        try:
+            m = re.search(r"(\d{1,2}:\d{2}).*?for\s+(.+?)[\.\!]?$", base_text, re.I)
+            if m:
+                time_part = m.group(1)
+                purpose = m.group(2)
+                return f"It's {time_part}. It's a great time to focus on {purpose}."
+            return base_text.strip().rstrip('.!')
+        except Exception:
+            return base_text
+
     async def send_to_client_and_tts(text: str):
         nonlocal response_text
         if not text:
             return
+        # only one chunk for schedule mode, but reuse this for others if needed
         response_text += text + " "
+        # send visible chunk once
         try:
             await manager.send_json({'type': 'llm_chunk', 'text': text}, user_id)
         except Exception:
             pass
+        # push single sentence to tts queue (if available)
         if user_id in user_sessions and 'tts_queue' in user_sessions[user_id]:
             user_sessions[user_id]['tts_queue'].put(text)
-            logging.debug(f"LLM Node: Sent to TTS queue: '{text}'")
+            logging.debug(f"LLM Node: Sent single sentence to TTS queue: '{text}'")
 
     try:
-        if mode == 'schedule':
-            # For schedules, directly use the synthesized prompt.
-            await send_to_client_and_tts(transcription)
-        elif mode == 'vision' and image_data:
+        if mode == 'vision' and image_data:
             if not gemini_model:
                 raise Exception("Gemini model not configured")
             logging.info("LLM Node: Using Gemini for multimodal processing.")
@@ -679,36 +695,70 @@ async def llm_node(state: AvatarState) -> dict:
                     }
                 )
                 txt = getattr(gemini_response, "text", None) or "I've processed your image but couldn't generate a response."
-                await send_to_client_and_tts(txt)
+                # for vision keep behavior similar to before but only send once
+                await send_to_client_and_tts(first_sentence_only(txt))
             except Exception as e:
                 logging.error(f"Error with Gemini processing: {e}")
                 await send_to_client_and_tts("Error processing your request.")
         else:
-            # Interactive avatar mode
-            if not llm or not prompt or not parser:
-                raise Exception("LLM components not configured")
-            logging.info("LLM Node: Using Langchain for text processing.")
-            llm_only_chain = prompt | llm | parser
-            buffer = ""
-            sentence_splitter = re.compile(r'([.!?])')
-            async for chunk_text in llm_only_chain.astream({"input": transcription}, config={"callbacks": [CallbackHandler()]}):
-                if not chunk_text:
-                    continue
-                buffer += chunk_text
-                await manager.send_json({'type': 'llm_chunk', 'text': chunk_text}, user_id)
-                parts = sentence_splitter.split(buffer)
-                while len(parts) >= 3:
-                    sentence = (parts[0] + parts[1]).strip()
-                    if sentence and user_id in user_sessions and 'tts_queue' in user_sessions[user_id]:
-                        user_sessions[user_id]['tts_queue'].put(sentence)
-                        response_text += sentence + " "
-                        logging.debug(f"LLM Node (interactive): Sent to TTS queue: '{sentence}'")
-                    buffer = "".join(parts[2:])
+            # schedule mode -> get a single rephrase
+            if mode == 'schedule':
+                # Prefer LLM rephrase if available
+                if llm and prompt and parser:
+                    try:
+                        schedule_prompt = ChatPromptTemplate.from_messages([
+                            ('system', (
+                                "You are concise. Rephrase the given short reminder into a single short spoken-style sentence suitable for TTS. "
+                                "Return only that single sentence."
+                            )),
+                            ('user', '{input}')
+                        ])
+                        schedule_chain = schedule_prompt | llm | parser
+                        out_text = schedule_chain.run({"input": transcription})
+                        # extract first non-empty line and then the first sentence
+                        lines = [ln.strip() for ln in (out_text or "").splitlines() if ln.strip()]
+                        chosen = lines[0] if lines else out_text or ""
+                        chosen = first_sentence_only(chosen)
+                        if not chosen:
+                            chosen = first_sentence_only(local_single_rephrase(transcription))
+                        await send_to_client_and_tts(chosen)
+                    except Exception as e:
+                        logging.error(f"Schedule LLM run failed: {e} — falling back to local")
+                        chosen = first_sentence_only(local_single_rephrase(transcription))
+                        await send_to_client_and_tts(chosen)
+                else:
+                    logging.info("LLM not configured for schedule mode; using local rephrase.")
+                    chosen = first_sentence_only(local_single_rephrase(transcription))
+                    await send_to_client_and_tts(chosen)
+
+            else:
+                # interactive mode (keep streaming behavior)
+                if not llm or not prompt or not parser:
+                    raise Exception("LLM components not configured")
+                logging.info("LLM Node: Using Langchain for text processing.")
+                llm_only_chain = prompt | llm | parser
+                # stream and split into sentence chunks as before
+                buffer = ""
+                sentence_splitter = re.compile(r'([.!?])')
+                langfuse_handler = CallbackHandler()
+                async for chunk_text in llm_only_chain.astream({"input": transcription}, config={"callbacks": [langfuse_handler]}):
+                    if not chunk_text:
+                        continue
+                    buffer += chunk_text
+                    await manager.send_json({'type': 'llm_chunk', 'text': chunk_text}, user_id)
                     parts = sentence_splitter.split(buffer)
-            if buffer.strip():
-                if user_id in user_sessions and 'tts_queue' in user_sessions[user_id]:
-                    user_sessions[user_id]['tts_queue'].put(buffer.strip())
-                    response_text += buffer.strip()
+                    while len(parts) >= 3:
+                        sentence = (parts[0] + parts[1]).strip()
+                        if sentence and user_id in user_sessions and 'tts_queue' in user_sessions[user_id]:
+                            user_sessions[user_id]['tts_queue'].put(sentence)
+                            response_text += sentence + " "
+                            logging.debug(f"LLM Node (interactive): Sent to TTS queue: '{sentence}'")
+                        buffer = "".join(parts[2:])
+                        parts = sentence_splitter.split(buffer)
+                if buffer.strip():
+                    if user_id in user_sessions and 'tts_queue' in user_sessions[user_id]:
+                        user_sessions[user_id]['tts_queue'].put(buffer.strip())
+                        response_text += buffer.strip()
 
         # signal end-of-response to TTS worker
         if user_id in user_sessions and 'tts_queue' in user_sessions[user_id]:
@@ -724,7 +774,7 @@ async def llm_node(state: AvatarState) -> dict:
 
     return {"llm_response": response_text, "response_complete": True}
 
-@track 
+
 async def tts_node(state: AvatarState) -> dict:
     """Placeholder for TTS node - actual TTS is handled by worker processes."""
     logging.info(f"TTS Node: TTS handled by worker for user {state['user_id']}")
@@ -881,6 +931,58 @@ async def root(request: Request, user_id: str = Depends(get_current_user)):
     if not user_id:
         return RedirectResponse(url="/login")
     return templates.TemplateResponse("layout.html", {"request": request, "user_id": user_id})
+
+    # --- Prompt Management API ---
+@app.get("/api/prompts")
+async def get_prompts():
+    """Get all available prompts"""
+    try:
+        prompts = prompt_manager.list_prompts()
+        return JSONResponse(content={"prompts": prompts})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/prompts/{prompt_name}")
+async def get_prompt(prompt_name: str, version: int = None):
+    """Get a specific prompt by name and optional version"""
+    try:
+        if version:
+            prompt = prompt_manager.get_prompt(prompt_name, version)
+        else:
+            prompt = prompt_manager.get_current_prompt(prompt_name)
+        return JSONResponse(content=prompt)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+@app.post("/api/prompts")
+async def create_prompt(prompt_data: dict):
+    """Create a new prompt version"""
+    try:
+        name = prompt_data.get("name")
+        prompt_text = prompt_data.get("prompt")
+        tags = prompt_data.get("tags", [])
+        metadata = prompt_data.get("metadata", {})
+        
+        if not name or not prompt_text:
+            raise HTTPException(status_code=400, detail="Name and prompt are required")
+        
+        new_prompt = prompt_manager.create_prompt(name, prompt_text, tags, metadata)
+        return JSONResponse(content=new_prompt)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.put("/api/prompts/{prompt_name}/current")
+async def set_current_prompt_version(prompt_name: str, version_data: dict):
+    """Set the current version for a prompt"""
+    try:
+        version = version_data.get("version")
+        if version is None:
+            raise HTTPException(status_code=400, detail="Version is required")
+        
+        prompt_manager.set_current_version(prompt_name, version)
+        return JSONResponse(content={"message": f"Current version for '{prompt_name}' set to {version}"})
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request):
@@ -1231,4 +1333,4 @@ if __name__ == "__main__":
     
     mp.set_start_method('spawn', force=True)
 
-    uvicorn.run(app, host="0.0.0.0", port=8506)
+    uvicorn.run(app, host="0.0.0.0", port=8505)

@@ -4,7 +4,7 @@ Backend: FastAPI (CPU-only Faster-Whisper, Ollama, Coqui TTS)
 Frontend: Vanilla HTML/CSS/JS
 
 ## Requirements
-- Python 3.11 (use your `edge` venv if available)
+- Python 3.10 (use your `edge` venv if available)
 - Ollama running locally with a text model (recommended):
   - `ollama pull llama3.2:1b`
   - CPU-only: `export OLLAMA_NO_GPU=1 && ollama serve`

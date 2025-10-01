@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8600:8600"
+    volumes:
+      - ./backend:/app/backend
+      - ./requirements.txt:/app/requirements.txt
+    env_file:
+       - backend/.env
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./voice_avatar_react:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    env_file:
+       - voice_avatar_react/.env

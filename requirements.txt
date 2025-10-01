@@ -1,0 +1,24 @@
+# Web Framework
+fastapi
+uvicorn[standard]
+python-multipart
+
+# AI & Machine Learning Frameworks
+langchain
+langchain-groq
+langchain-core
+langchain-community
+langchain-ollama
+groq
+numpy==1.22.0
+
+# Audio Processing
+pydub
+librosa
+soundfile
+ffmpeg-python
+faster_whisper
+
+
+tts==0.22.0
+# torchaudio
